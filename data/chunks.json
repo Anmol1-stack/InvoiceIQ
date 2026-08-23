@@ -1,0 +1,17 @@
+[
+  {
+    "chunk_id": "contract_policy_0",
+    "source": "contract_policy.txt",
+    "text": "CONFIDENTIALITY POLICY Confidential information includes business plans, financial information, customer information, technical information, and proprietary documents. Confidential information must not be disclosed to third parties unless the disclosure is authorized by the company or required by law. Information that is already publicly available is not considered confidential information. Employees must protect confidential information during and after their employment."
+  },
+  {
+    "chunk_id": "payment_policy_0",
+    "source": "payment_policy.txt",
+    "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed."
+  },
+  {
+    "chunk_id": "termination_policy_0",
+    "source": "termination_policy.txt",
+    "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination."
+  }
+]

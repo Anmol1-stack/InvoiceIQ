@@ -1,0 +1,7 @@
+TERMINATION POLICY
+
+Either party may terminate the agreement by providing thirty days written notice.
+
+Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice.
+
+Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.
