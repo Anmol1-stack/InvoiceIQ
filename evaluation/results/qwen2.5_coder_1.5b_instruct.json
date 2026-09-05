@@ -1,0 +1,802 @@
+[
+  {
+    "id": "Q01",
+    "question": "How long do we have to pay an invoice?",
+    "expected": "Invoices must be paid within thirty days from the invoice date.",
+    "response": {
+      "question": "How long do we have to pay an invoice?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date unless different payment terms have been agreed in writing. The payment due date is calculated from the invoice date. For example, an invoice dated June 1 is due on July 1. Customers should make payments using one of the payment methods specified by the service provider. When making a payment, customers should include the invoice number or payment reference so that the payment can be matched to",
+          "similarity": 0.7916129450988008
+        },
+        {
+          "source": "invoice_policy.txt",
+          "text": "INVOICE POLICY All invoices must contain the invoice number, invoice date, supplier name, customer name, description of goods or services, applicable taxes, total amount, payment terms, and payment instructions. Each invoice should have a unique invoice number. The invoice date should accurately represent the date on which the invoice was issued. Invoices should clearly identify the goods or services for which the customer is being charged. The total amount should reflect the applicable charges, discounts, taxes, and adjustments. Invoices should",
+          "similarity": 0.7272829280558473
+        },
+        {
+          "source": "invoice_policy.txt",
+          "text": "for record-keeping purposes. Customers should review invoices after receiving them and report suspected errors promptly. An invoice correction does not automatically extend the payment deadline unless the service provider confirms a revised deadline. Invoices should be retained according to applicable organizational record-keeping requirements.",
+          "similarity": 0.6968193916311456
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a different arrangement is confirmed in writing. The customer must notify the service provider of any disputed invoice within ten business days. A dispute should identify the invoice number, the amount being disputed, and the reason for the dispute. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another",
+          "similarity": 0.690908295249394
+        }
+      ],
+      "answer": "Thirty days from the invoice date."
+    },
+    "latency_seconds": 4.374
+  },
+  {
+    "id": "Q02",
+    "question": "What happens if an invoice is paid late?",
+    "expected": "Late payments may be subject to applicable interest charges.",
+    "response": {
+      "question": "What happens if an invoice is paid late?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "making a payment, customers should include the invoice number or payment reference so that the payment can be matched to the correct invoice. Late payments may be subject to applicable interest charges. The service provider may send a payment reminder when an invoice becomes overdue. If a customer expects difficulty making a payment before the due date, the customer should contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a",
+          "similarity": 0.7549572495563782
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. If a customer pays an invoice after the due date, applicable late payment charges may be added according to the agreed terms. Customers should retain payment confirmations and transaction references for their records. If a payment has been made but is not reflected on the account, the customer should provide the payment reference to the service provider",
+          "similarity": 0.7448887974281259
+        },
+        {
+          "source": "invoice_policy.txt",
+          "text": "for record-keeping purposes. Customers should review invoices after receiving them and report suspected errors promptly. An invoice correction does not automatically extend the payment deadline unless the service provider confirms a revised deadline. Invoices should be retained according to applicable organizational record-keeping requirements.",
+          "similarity": 0.7092554143288481
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date unless different payment terms have been agreed in writing. The payment due date is calculated from the invoice date. For example, an invoice dated June 1 is due on July 1. Customers should make payments using one of the payment methods specified by the service provider. When making a payment, customers should include the invoice number or payment reference so that the payment can be matched to",
+          "similarity": 0.7085718633688637
+        }
+      ],
+      "answer": "If an invoice is paid late, applicable late payment charges may be added according to the agreed terms."
+    },
+    "latency_seconds": 2.184
+  },
+  {
+    "id": "Q03",
+    "question": "How long do we have to dispute an invoice?",
+    "expected": "The customer must notify the service provider within ten business days.",
+    "response": {
+      "question": "How long do we have to dispute an invoice?",
+      "retrieved_documents": [
+        {
+          "source": "dispute_policy.txt",
+          "text": "DISPUTE POLICY Customers must notify the service provider of any disputed invoice within ten business days of receiving the invoice. A dispute should identify the invoice number, the disputed amount, the reason for the dispute, and any supporting documentation. Examples of disputed items may include an incorrect charge, incorrect quantity, incorrect tax amount, duplicate charge, or service that was not received. The service provider will review the disputed information and may request additional documentation from the customer. Submitting a dispute",
+          "similarity": 0.8274983766711539
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a different arrangement is confirmed in writing. The customer must notify the service provider of any disputed invoice within ten business days. A dispute should identify the invoice number, the amount being disputed, and the reason for the dispute. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another",
+          "similarity": 0.7795114988286908
+        },
+        {
+          "source": "dispute_policy.txt",
+          "text": "received. The service provider will review the disputed information and may request additional documentation from the customer. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. Customers should continue to pay any undisputed amount according to the original payment terms. The service provider may contact the customer during the investigation to clarify the disputed transaction. If the dispute is found to be valid, the",
+          "similarity": 0.7602112004649686
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. If a customer pays an invoice after the due date, applicable late payment charges may be added according to the agreed terms. Customers should retain payment confirmations and transaction references for their records. If a payment has been made but is not reflected on the account, the customer should provide the payment reference to the service provider",
+          "similarity": 0.758940616982741
+        }
+      ],
+      "answer": "10 business days"
+    },
+    "latency_seconds": 1.943
+  },
+  {
+    "id": "Q04",
+    "question": "Do undisputed portions remain payable when another portion is disputed?",
+    "expected": "Yes. Undisputed portions remain payable.",
+    "response": {
+      "question": "Do undisputed portions remain payable when another portion is disputed?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. If a customer pays an invoice after the due date, applicable late payment charges may be added according to the agreed terms. Customers should retain payment confirmations and transaction references for their records. If a payment has been made but is not reflected on the account, the customer should provide the payment reference to the service provider",
+          "similarity": 0.7785262816631711
+        },
+        {
+          "source": "dispute_policy.txt",
+          "text": "received. The service provider will review the disputed information and may request additional documentation from the customer. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. Customers should continue to pay any undisputed amount according to the original payment terms. The service provider may contact the customer during the investigation to clarify the disputed transaction. If the dispute is found to be valid, the",
+          "similarity": 0.7564789116977921
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a different arrangement is confirmed in writing. The customer must notify the service provider of any disputed invoice within ten business days. A dispute should identify the invoice number, the amount being disputed, and the reason for the dispute. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another",
+          "similarity": 0.6555243269470973
+        },
+        {
+          "source": "dispute_policy.txt",
+          "text": "contact the customer during the investigation to clarify the disputed transaction. If the dispute is found to be valid, the service provider may issue a corrected invoice, credit, refund, or other appropriate adjustment. If the dispute is found to be invalid, the original invoice amount may remain payable. Customers should retain copies of documents and communications submitted during the dispute process. A dispute should be raised as soon as the customer identifies an issue rather than waiting until the payment",
+          "similarity": 0.6487161547942494
+        }
+      ],
+      "answer": "Yes, undisputed portions of an invoice remain payable even when another portion is disputed."
+    },
+    "latency_seconds": 2.231
+  },
+  {
+    "id": "Q05",
+    "question": "How much written notice is required to terminate the agreement?",
+    "expected": "Either party may terminate the agreement by providing thirty days written notice.",
+    "response": {
+      "question": "How much written notice is required to terminate the agreement?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.8346094690419559
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7963997201602316
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "CONTRACT POLICY Either party may request changes to the agreement, but amendments must be agreed to in writing by the authorized representatives of both parties. Contract amendments should clearly identify the sections being changed and the effective date of the amendment. An amendment does not automatically change unrelated provisions of the agreement. Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when",
+          "similarity": 0.7570153270815956
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take precedence. The parties should complete any required final payments, documentation, or handover activities following termination. Confidentiality obligations that survive termination continue according to the applicable agreement.",
+          "similarity": 0.7468556707638968
+        }
+      ],
+      "answer": "Thirty days written notice is required to terminate the agreement."
+    },
+    "latency_seconds": 1.9
+  },
+  {
+    "id": "Q06",
+    "question": "When can immediate termination occur?",
+    "expected": "Immediate termination may occur after a material breach is not corrected within fifteen days after written notice.",
+    "response": {
+      "question": "When can immediate termination occur?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.7810339689455607
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7633141396436196
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a breach notice should take appropriate corrective action within the specified fifteen-day period. If the breach is corrected within the allowed period, immediate termination on the basis of that breach may not occur. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated.",
+          "similarity": 0.6915256289112403
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated. Termination of a contract does not automatically cancel amounts that were already owed by either party. Any termination-related communication should be provided in writing through an authorized communication channel. Customers should retain a copy of the termination notice and any confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take",
+          "similarity": 0.6728424131942196
+        }
+      ],
+      "answer": "Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice."
+    },
+    "latency_seconds": 1.933
+  },
+  {
+    "id": "Q07",
+    "question": "Does termination remove payment obligations that became due before termination?",
+    "expected": "No.",
+    "response": {
+      "question": "Does termination remove payment obligations that became due before termination?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated. Termination of a contract does not automatically cancel amounts that were already owed by either party. Any termination-related communication should be provided in writing through an authorized communication channel. Customers should retain a copy of the termination notice and any confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take",
+          "similarity": 0.8157346280992445
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7875951995457898
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a breach notice should take appropriate corrective action within the specified fifteen-day period. If the breach is corrected within the allowed period, immediate termination on the basis of that breach may not occur. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated.",
+          "similarity": 0.7543968061276517
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.7539517419294018
+        }
+      ],
+      "answer": "Yes, outstanding payment obligations remain applicable after termination."
+    },
+    "latency_seconds": 2.253
+  },
+  {
+    "id": "Q08",
+    "question": "Does termination remove confidentiality obligations?",
+    "expected": "No.",
+    "response": {
+      "question": "Does termination remove confidentiality obligations?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take precedence. The parties should complete any required final payments, documentation, or handover activities following termination. Confidentiality obligations that survive termination continue according to the applicable agreement.",
+          "similarity": 0.7956675460148602
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7400420439398617
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated. Termination of a contract does not automatically cancel amounts that were already owed by either party. Any termination-related communication should be provided in writing through an authorized communication channel. Customers should retain a copy of the termination notice and any confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take",
+          "similarity": 0.7233432777957678
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.7086341722588945
+        }
+      ],
+      "answer": "Yes, termination removes confidentiality obligations as specified in the agreement."
+    },
+    "latency_seconds": 1.986
+  },
+  {
+    "id": "Q09",
+    "question": "Does termination remove intellectual-property obligations?",
+    "expected": "No.",
+    "response": {
+      "question": "Does termination remove intellectual-property obligations?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated. Termination of a contract does not automatically cancel amounts that were already owed by either party. Any termination-related communication should be provided in writing through an authorized communication channel. Customers should retain a copy of the termination notice and any confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take",
+          "similarity": 0.8021875459849855
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7316487889182159
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in writing and approved by the appropriate representatives. The parties should review important contractual terms before agreeing to a renewal. Confidentiality obligations may continue after the agreement ends when specified in the contract. Intellectual property rights and obligations should be handled according to the terms of the applicable agreement. Changes to payment terms should be documented in writing. A verbal discussion",
+          "similarity": 0.7105425513075647
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.6921922304988352
+        }
+      ],
+      "answer": "Yes, according to the context, intellectual property obligations are not removed upon termination of the agreement. Intellectual property rights and obligations should be handled according to the terms of the applicable agreement, which means that they remain intact even after termination."
+    },
+    "latency_seconds": 2.397
+  },
+  {
+    "id": "Q10",
+    "question": "What obligations continue after termination?",
+    "expected": "Confidentiality, intellectual property, and payments that became due before termination.",
+    "response": {
+      "question": "What obligations continue after termination?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take precedence. The parties should complete any required final payments, documentation, or handover activities following termination. Confidentiality obligations that survive termination continue according to the applicable agreement.",
+          "similarity": 0.7747050056260784
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated. Termination of a contract does not automatically cancel amounts that were already owed by either party. Any termination-related communication should be provided in writing through an authorized communication channel. Customers should retain a copy of the termination notice and any confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take",
+          "similarity": 0.7678379608849407
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7633326163605887
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in writing and approved by the appropriate representatives. The parties should review important contractual terms before agreeing to a renewal. Confidentiality obligations may continue after the agreement ends when specified in the contract. Intellectual property rights and obligations should be handled according to the terms of the applicable agreement. Changes to payment terms should be documented in writing. A verbal discussion",
+          "similarity": 0.7263840371620807
+        }
+      ],
+      "answer": "Confidentiality obligations, intellectual property rights, and obligations related to payments that became due before termination remain applicable after termination."
+    },
+    "latency_seconds": 2.54
+  },
+  {
+    "id": "Q11",
+    "question": "What is the payment deadline for an invoice?",
+    "expected": "Thirty days from the invoice date.",
+    "response": {
+      "question": "What is the payment deadline for an invoice?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date unless different payment terms have been agreed in writing. The payment due date is calculated from the invoice date. For example, an invoice dated June 1 is due on July 1. Customers should make payments using one of the payment methods specified by the service provider. When making a payment, customers should include the invoice number or payment reference so that the payment can be matched to",
+          "similarity": 0.8411640508324341
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "making a payment, customers should include the invoice number or payment reference so that the payment can be matched to the correct invoice. Late payments may be subject to applicable interest charges. The service provider may send a payment reminder when an invoice becomes overdue. If a customer expects difficulty making a payment before the due date, the customer should contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a",
+          "similarity": 0.8043416693826739
+        },
+        {
+          "source": "invoice_policy.txt",
+          "text": "for record-keeping purposes. Customers should review invoices after receiving them and report suspected errors promptly. An invoice correction does not automatically extend the payment deadline unless the service provider confirms a revised deadline. Invoices should be retained according to applicable organizational record-keeping requirements.",
+          "similarity": 0.7796461512570461
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a different arrangement is confirmed in writing. The customer must notify the service provider of any disputed invoice within ten business days. A dispute should identify the invoice number, the amount being disputed, and the reason for the dispute. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another",
+          "similarity": 0.7732004829204424
+        }
+      ],
+      "answer": "The payment due date is calculated from the invoice date."
+    },
+    "latency_seconds": 1.639
+  },
+  {
+    "id": "Q12",
+    "question": "Within what period must an invoice be settled after it is issued?",
+    "expected": "Within thirty days from the invoice date.",
+    "response": {
+      "question": "Within what period must an invoice be settled after it is issued?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date unless different payment terms have been agreed in writing. The payment due date is calculated from the invoice date. For example, an invoice dated June 1 is due on July 1. Customers should make payments using one of the payment methods specified by the service provider. When making a payment, customers should include the invoice number or payment reference so that the payment can be matched to",
+          "similarity": 0.7451758394970819
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a different arrangement is confirmed in writing. The customer must notify the service provider of any disputed invoice within ten business days. A dispute should identify the invoice number, the amount being disputed, and the reason for the dispute. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another",
+          "similarity": 0.7407193740389619
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. If a customer pays an invoice after the due date, applicable late payment charges may be added according to the agreed terms. Customers should retain payment confirmations and transaction references for their records. If a payment has been made but is not reflected on the account, the customer should provide the payment reference to the service provider",
+          "similarity": 0.737896616675405
+        },
+        {
+          "source": "invoice_policy.txt",
+          "text": "for record-keeping purposes. Customers should review invoices after receiving them and report suspected errors promptly. An invoice correction does not automatically extend the payment deadline unless the service provider confirms a revised deadline. Invoices should be retained according to applicable organizational record-keeping requirements.",
+          "similarity": 0.7323891152652131
+        }
+      ],
+      "answer": "Thirty days from the invoice date."
+    },
+    "latency_seconds": 1.564
+  },
+  {
+    "id": "Q13",
+    "question": "How many days does a customer have to raise an invoice dispute?",
+    "expected": "Ten business days.",
+    "response": {
+      "question": "How many days does a customer have to raise an invoice dispute?",
+      "retrieved_documents": [
+        {
+          "source": "dispute_policy.txt",
+          "text": "DISPUTE POLICY Customers must notify the service provider of any disputed invoice within ten business days of receiving the invoice. A dispute should identify the invoice number, the disputed amount, the reason for the dispute, and any supporting documentation. Examples of disputed items may include an incorrect charge, incorrect quantity, incorrect tax amount, duplicate charge, or service that was not received. The service provider will review the disputed information and may request additional documentation from the customer. Submitting a dispute",
+          "similarity": 0.8028311519557871
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a different arrangement is confirmed in writing. The customer must notify the service provider of any disputed invoice within ten business days. A dispute should identify the invoice number, the amount being disputed, and the reason for the dispute. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another",
+          "similarity": 0.7673748696783427
+        },
+        {
+          "source": "dispute_policy.txt",
+          "text": "process. A dispute should be raised as soon as the customer identifies an issue rather than waiting until the payment deadline. The outcome of a dispute should be communicated to the customer after the review has been completed. If a customer disagrees with the outcome, the customer may provide additional supporting information for further review.",
+          "similarity": 0.7605444562184075
+        },
+        {
+          "source": "dispute_policy.txt",
+          "text": "contact the customer during the investigation to clarify the disputed transaction. If the dispute is found to be valid, the service provider may issue a corrected invoice, credit, refund, or other appropriate adjustment. If the dispute is found to be invalid, the original invoice amount may remain payable. Customers should retain copies of documents and communications submitted during the dispute process. A dispute should be raised as soon as the customer identifies an issue rather than waiting until the payment",
+          "similarity": 0.7350488148732609
+        }
+      ],
+      "answer": "Ten business days"
+    },
+    "latency_seconds": 1.102
+  },
+  {
+    "id": "Q14",
+    "question": "Can we withhold an undisputed part of an invoice because another part is disputed?",
+    "expected": "No. Undisputed portions remain payable.",
+    "response": {
+      "question": "Can we withhold an undisputed part of an invoice because another part is disputed?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. If a customer pays an invoice after the due date, applicable late payment charges may be added according to the agreed terms. Customers should retain payment confirmations and transaction references for their records. If a payment has been made but is not reflected on the account, the customer should provide the payment reference to the service provider",
+          "similarity": 0.780765795924142
+        },
+        {
+          "source": "dispute_policy.txt",
+          "text": "received. The service provider will review the disputed information and may request additional documentation from the customer. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. Customers should continue to pay any undisputed amount according to the original payment terms. The service provider may contact the customer during the investigation to clarify the disputed transaction. If the dispute is found to be valid, the",
+          "similarity": 0.7735309433875442
+        },
+        {
+          "source": "dispute_policy.txt",
+          "text": "contact the customer during the investigation to clarify the disputed transaction. If the dispute is found to be valid, the service provider may issue a corrected invoice, credit, refund, or other appropriate adjustment. If the dispute is found to be invalid, the original invoice amount may remain payable. Customers should retain copies of documents and communications submitted during the dispute process. A dispute should be raised as soon as the customer identifies an issue rather than waiting until the payment",
+          "similarity": 0.6939543075071746
+        },
+        {
+          "source": "dispute_policy.txt",
+          "text": "DISPUTE POLICY Customers must notify the service provider of any disputed invoice within ten business days of receiving the invoice. A dispute should identify the invoice number, the disputed amount, the reason for the dispute, and any supporting documentation. Examples of disputed items may include an incorrect charge, incorrect quantity, incorrect tax amount, duplicate charge, or service that was not received. The service provider will review the disputed information and may request additional documentation from the customer. Submitting a dispute",
+          "similarity": 0.6718107365108081
+        }
+      ],
+      "answer": "Yes, we can withhold an undisputed part of an invoice if another part is disputed according to the provided context."
+    },
+    "latency_seconds": 1.712
+  },
+  {
+    "id": "Q15",
+    "question": "How much advance notice must either party provide before ending the agreement?",
+    "expected": "Thirty days written notice.",
+    "response": {
+      "question": "How much advance notice must either party provide before ending the agreement?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.7992397468004934
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "CONTRACT POLICY Either party may request changes to the agreement, but amendments must be agreed to in writing by the authorized representatives of both parties. Contract amendments should clearly identify the sections being changed and the effective date of the amendment. An amendment does not automatically change unrelated provisions of the agreement. Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when",
+          "similarity": 0.7769477540111104
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take precedence. The parties should complete any required final payments, documentation, or handover activities following termination. Confidentiality obligations that survive termination continue according to the applicable agreement.",
+          "similarity": 0.7764938122521995
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7671816713207563
+        }
+      ],
+      "answer": "Either party must provide thirty days written notice to terminate the agreement unless a different termination period has been agreed."
+    },
+    "latency_seconds": 1.91
+  },
+  {
+    "id": "Q16",
+    "question": "How long does a party have to fix a material breach after receiving notice?",
+    "expected": "Fifteen days.",
+    "response": {
+      "question": "How long does a party have to fix a material breach after receiving notice?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a breach notice should take appropriate corrective action within the specified fifteen-day period. If the breach is corrected within the allowed period, immediate termination on the basis of that breach may not occur. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated.",
+          "similarity": 0.8155157269204681
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.7228619309360694
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.6970759252943064
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "CONTRACT POLICY Either party may request changes to the agreement, but amendments must be agreed to in writing by the authorized representatives of both parties. Contract amendments should clearly identify the sections being changed and the effective date of the amendment. An amendment does not automatically change unrelated provisions of the agreement. Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when",
+          "similarity": 0.6593255449634771
+        }
+      ],
+      "answer": "Fifteen days"
+    },
+    "latency_seconds": 2.009
+  },
+  {
+    "id": "Q17",
+    "question": "Which responsibilities survive after the agreement ends?",
+    "expected": "Confidentiality, intellectual property, and payments that became due before termination.",
+    "response": {
+      "question": "Which responsibilities survive after the agreement ends?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take precedence. The parties should complete any required final payments, documentation, or handover activities following termination. Confidentiality obligations that survive termination continue according to the applicable agreement.",
+          "similarity": 0.7683672292701113
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in writing and approved by the appropriate representatives. The parties should review important contractual terms before agreeing to a renewal. Confidentiality obligations may continue after the agreement ends when specified in the contract. Intellectual property rights and obligations should be handled according to the terms of the applicable agreement. Changes to payment terms should be documented in writing. A verbal discussion",
+          "similarity": 0.7381210722392626
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated. Termination of a contract does not automatically cancel amounts that were already owed by either party. Any termination-related communication should be provided in writing through an authorized communication channel. Customers should retain a copy of the termination notice and any confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take",
+          "similarity": 0.7280621512368639
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7110902881199358
+        }
+      ],
+      "answer": "Confidentiality obligations continue according to the applicable agreement."
+    },
+    "latency_seconds": 2.189
+  },
+  {
+    "id": "Q18",
+    "question": "If an invoice is dated June 1, when is payment due under the payment policy?",
+    "expected": "Thirty days from June 1.",
+    "response": {
+      "question": "If an invoice is dated June 1, when is payment due under the payment policy?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date unless different payment terms have been agreed in writing. The payment due date is calculated from the invoice date. For example, an invoice dated June 1 is due on July 1. Customers should make payments using one of the payment methods specified by the service provider. When making a payment, customers should include the invoice number or payment reference so that the payment can be matched to",
+          "similarity": 0.8712195683290233
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "making a payment, customers should include the invoice number or payment reference so that the payment can be matched to the correct invoice. Late payments may be subject to applicable interest charges. The service provider may send a payment reminder when an invoice becomes overdue. If a customer expects difficulty making a payment before the due date, the customer should contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a",
+          "similarity": 0.7327263741447371
+        },
+        {
+          "source": "invoice_policy.txt",
+          "text": "INVOICE POLICY All invoices must contain the invoice number, invoice date, supplier name, customer name, description of goods or services, applicable taxes, total amount, payment terms, and payment instructions. Each invoice should have a unique invoice number. The invoice date should accurately represent the date on which the invoice was issued. Invoices should clearly identify the goods or services for which the customer is being charged. The total amount should reflect the applicable charges, discounts, taxes, and adjustments. Invoices should",
+          "similarity": 0.7114761911993175
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. If a customer pays an invoice after the due date, applicable late payment charges may be added according to the agreed terms. Customers should retain payment confirmations and transaction references for their records. If a payment has been made but is not reflected on the account, the customer should provide the payment reference to the service provider",
+          "similarity": 0.6858786121118063
+        }
+      ],
+      "answer": "July 1"
+    },
+    "latency_seconds": 1.369
+  },
+  {
+    "id": "Q19",
+    "question": "If a customer disputes only part of an invoice, does the undisputed amount still have to be paid?",
+    "expected": "Yes.",
+    "response": {
+      "question": "If a customer disputes only part of an invoice, does the undisputed amount still have to be paid?",
+      "retrieved_documents": [
+        {
+          "source": "dispute_policy.txt",
+          "text": "received. The service provider will review the disputed information and may request additional documentation from the customer. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. Customers should continue to pay any undisputed amount according to the original payment terms. The service provider may contact the customer during the investigation to clarify the disputed transaction. If the dispute is found to be valid, the",
+          "similarity": 0.8316918075352204
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. If a customer pays an invoice after the due date, applicable late payment charges may be added according to the agreed terms. Customers should retain payment confirmations and transaction references for their records. If a payment has been made but is not reflected on the account, the customer should provide the payment reference to the service provider",
+          "similarity": 0.8204508379127877
+        },
+        {
+          "source": "dispute_policy.txt",
+          "text": "contact the customer during the investigation to clarify the disputed transaction. If the dispute is found to be valid, the service provider may issue a corrected invoice, credit, refund, or other appropriate adjustment. If the dispute is found to be invalid, the original invoice amount may remain payable. Customers should retain copies of documents and communications submitted during the dispute process. A dispute should be raised as soon as the customer identifies an issue rather than waiting until the payment",
+          "similarity": 0.7657946488798713
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a different arrangement is confirmed in writing. The customer must notify the service provider of any disputed invoice within ten business days. A dispute should identify the invoice number, the amount being disputed, and the reason for the dispute. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another",
+          "similarity": 0.7472667394293292
+        }
+      ],
+      "answer": "Yes, the undisputed amount still has to be paid according to the original payment terms."
+    },
+    "latency_seconds": 2.426
+  },
+  {
+    "id": "Q20",
+    "question": "If a party receives written notice of a material breach but does not correct it within 15 days, what can happen?",
+    "expected": "Immediate termination may occur.",
+    "response": {
+      "question": "If a party receives written notice of a material breach but does not correct it within 15 days, what can happen?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a breach notice should take appropriate corrective action within the specified fifteen-day period. If the breach is corrected within the allowed period, immediate termination on the basis of that breach may not occur. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated.",
+          "similarity": 0.8400515956843733
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.7281285186225724
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7211648060300633
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a different arrangement is confirmed in writing. The customer must notify the service provider of any disputed invoice within ten business days. A dispute should identify the invoice number, the amount being disputed, and the reason for the dispute. Submitting a dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another",
+          "similarity": 0.66107805948237
+        }
+      ],
+      "answer": "Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated."
+    },
+    "latency_seconds": 1.795
+  },
+  {
+    "id": "Q21",
+    "question": "If the agreement is terminated, can previously due payments simply be ignored?",
+    "expected": "No. Payments that became due before termination remain obligations.",
+    "response": {
+      "question": "If the agreement is terminated, can previously due payments simply be ignored?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated. Termination of a contract does not automatically cancel amounts that were already owed by either party. Any termination-related communication should be provided in writing through an authorized communication channel. Customers should retain a copy of the termination notice and any confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take",
+          "similarity": 0.780328330343182
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7577560346338618
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.7466232571280867
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "confirmation received from the service provider. Where the agreement specifies a different notice period, the terms of that agreement take precedence. The parties should complete any required final payments, documentation, or handover activities following termination. Confidentiality obligations that survive termination continue according to the applicable agreement.",
+          "similarity": 0.7175507684717962
+        }
+      ],
+      "answer": "No, previous due payments cannot simply be ignored after termination. According to the context, outstanding invoices remain payable even after the agreement has been terminated."
+    },
+    "latency_seconds": 1.852
+  },
+  {
+    "id": "Q22",
+    "question": "Can either party terminate the agreement immediately without a material breach?",
+    "expected": "No. The policy specifies thirty days written notice for termination, while immediate termination may occur for an uncorrected material breach.",
+    "response": {
+      "question": "Can either party terminate the agreement immediately without a material breach?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.8302920674820862
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a breach notice should take appropriate corrective action within the specified fifteen-day period. If the breach is corrected within the allowed period, immediate termination on the basis of that breach may not occur. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated.",
+          "similarity": 0.7857184957698207
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.780656357594798
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "CONTRACT POLICY Either party may request changes to the agreement, but amendments must be agreed to in writing by the authorized representatives of both parties. Contract amendments should clearly identify the sections being changed and the effective date of the amendment. An amendment does not automatically change unrelated provisions of the agreement. Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when",
+          "similarity": 0.7754144163375225
+        }
+      ],
+      "answer": "Yes, either party may terminate the agreement immediately without a material breach if they provide thirty days written notice unless a different termination period has been agreed in the contract."
+    },
+    "latency_seconds": 2.653
+  },
+  {
+    "id": "Q23",
+    "question": "What is the penalty percentage for late invoice payments?",
+    "expected": "Not specified in the provided knowledge base.",
+    "response": {
+      "question": "What is the penalty percentage for late invoice payments?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. If a customer pays an invoice after the due date, applicable late payment charges may be added according to the agreed terms. Customers should retain payment confirmations and transaction references for their records. If a payment has been made but is not reflected on the account, the customer should provide the payment reference to the service provider",
+          "similarity": 0.7243192924555585
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "making a payment, customers should include the invoice number or payment reference so that the payment can be matched to the correct invoice. Late payments may be subject to applicable interest charges. The service provider may send a payment reminder when an invoice becomes overdue. If a customer expects difficulty making a payment before the due date, the customer should contact the service provider as soon as possible. A payment reminder does not change the original payment deadline unless a",
+          "similarity": 0.704100538840512
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date unless different payment terms have been agreed in writing. The payment due date is calculated from the invoice date. For example, an invoice dated June 1 is due on July 1. Customers should make payments using one of the payment methods specified by the service provider. When making a payment, customers should include the invoice number or payment reference so that the payment can be matched to",
+          "similarity": 0.7023902303536815
+        },
+        {
+          "source": "invoice_policy.txt",
+          "text": "for record-keeping purposes. Customers should review invoices after receiving them and report suspected errors promptly. An invoice correction does not automatically extend the payment deadline unless the service provider confirms a revised deadline. Invoices should be retained according to applicable organizational record-keeping requirements.",
+          "similarity": 0.689974363567241
+        }
+      ],
+      "answer": "There is no specific penalty mentioned in the provided context for late invoice payments. However, it is emphasized that late payment charges may be added based on agreed terms or as specified by the service provider when an invoice becomes overdue."
+    },
+    "latency_seconds": 2.438
+  },
+  {
+    "id": "Q24",
+    "question": "What payment methods are accepted for invoices?",
+    "expected": "Not specified in the provided knowledge base.",
+    "response": {
+      "question": "What payment methods are accepted for invoices?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date unless different payment terms have been agreed in writing. The payment due date is calculated from the invoice date. For example, an invoice dated June 1 is due on July 1. Customers should make payments using one of the payment methods specified by the service provider. When making a payment, customers should include the invoice number or payment reference so that the payment can be matched to",
+          "similarity": 0.7293286873604605
+        },
+        {
+          "source": "invoice_policy.txt",
+          "text": "INVOICE POLICY All invoices must contain the invoice number, invoice date, supplier name, customer name, description of goods or services, applicable taxes, total amount, payment terms, and payment instructions. Each invoice should have a unique invoice number. The invoice date should accurately represent the date on which the invoice was issued. Invoices should clearly identify the goods or services for which the customer is being charged. The total amount should reflect the applicable charges, discounts, taxes, and adjustments. Invoices should",
+          "similarity": 0.7184032035517688
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "dispute does not automatically suspend payment of the entire invoice. Undisputed portions of an invoice remain payable even when another portion is disputed. If a customer pays an invoice after the due date, applicable late payment charges may be added according to the agreed terms. Customers should retain payment confirmations and transaction references for their records. If a payment has been made but is not reflected on the account, the customer should provide the payment reference to the service provider",
+          "similarity": 0.7013044464516107
+        },
+        {
+          "source": "invoice_policy.txt",
+          "text": "for record-keeping purposes. Customers should review invoices after receiving them and report suspected errors promptly. An invoice correction does not automatically extend the payment deadline unless the service provider confirms a revised deadline. Invoices should be retained according to applicable organizational record-keeping requirements.",
+          "similarity": 0.6780137013823219
+        }
+      ],
+      "answer": "The payment methods specified by the service provider must be used by customers to make payments for invoices, as stated in the PAYMENT POLICY."
+    },
+    "latency_seconds": 2.157
+  },
+  {
+    "id": "Q25",
+    "question": "What is the maximum number of days allowed for termination notice?",
+    "expected": "The provided policy specifies thirty days written notice; it does not state a maximum beyond that.",
+    "response": {
+      "question": "What is the maximum number of days allowed for termination notice?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in writing. Termination notices should clearly identify the agreement being terminated and the intended termination date. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a",
+          "similarity": 0.7711904321492197
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding payment obligations remain applicable after termination. Contract renewals should be reviewed before the current agreement expires. Any renewal terms should be documented in",
+          "similarity": 0.7383024356305056
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "written notice. A material breach may include a significant failure to perform an important contractual obligation. The party receiving a breach notice should take appropriate corrective action within the specified fifteen-day period. If the breach is corrected within the allowed period, immediate termination on the basis of that breach may not occur. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination. Outstanding invoices remain payable even after the agreement has been terminated.",
+          "similarity": 0.6830956194896803
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "CONTRACT POLICY Either party may request changes to the agreement, but amendments must be agreed to in writing by the authorized representatives of both parties. Contract amendments should clearly identify the sections being changed and the effective date of the amendment. An amendment does not automatically change unrelated provisions of the agreement. Either party may terminate the agreement by providing thirty days written notice unless a different termination period has been agreed in the contract. Immediate termination may occur when",
+          "similarity": 0.6559813870600447
+        }
+      ],
+      "answer": "Thirty days"
+    },
+    "latency_seconds": 1.647
+  }
+]
