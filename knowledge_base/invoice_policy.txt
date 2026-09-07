@@ -1,0 +1,31 @@
+INVOICE POLICY
+
+All invoices must contain the invoice number, invoice date, supplier name, customer name, description of goods or services, applicable taxes, total amount, payment terms, and payment instructions.
+
+Each invoice should have a unique invoice number.
+
+The invoice date should accurately represent the date on which the invoice was issued.
+
+Invoices should clearly identify the goods or services for which the customer is being charged.
+
+The total amount should reflect the applicable charges, discounts, taxes, and adjustments.
+
+Invoices should be sent to the designated billing contact of the customer.
+
+Customers are responsible for providing accurate billing information and notifying the service provider when billing details change.
+
+If an invoice contains an incorrect amount, tax value, customer detail, or description, the customer should contact the service provider.
+
+A corrected invoice may be issued when an error is identified.
+
+The original invoice should remain available for audit and record-keeping purposes when a corrected invoice is issued.
+
+Duplicate invoice numbers should not be used for different transactions.
+
+Electronic invoices are considered valid when they contain the required information and can be retained for record-keeping purposes.
+
+Customers should review invoices after receiving them and report suspected errors promptly.
+
+An invoice correction does not automatically extend the payment deadline unless the service provider confirms a revised deadline.
+
+Invoices should be retained according to applicable organizational record-keeping requirements.

@@ -1,0 +1,36 @@
+services:
+
+  retrieval:
+    build: .
+    command: python scripts/retrieval_service.py
+    ports:
+      - "8001:8001"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  llm:
+    build: .
+    command: python scripts/llm_service.py
+    environment:
+      - MODEL=qwen2.5-coder:1.5b-instruct
+    ports:
+      - "8002:8002"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  orchestrator:
+    build: .
+    command: python scripts/orchestrator.py
+    ports:
+      - "8003:8003"
+    depends_on:
+      - retrieval
+      - llm
+
+  app:
+    build: .
+    command: python scripts/app_service.py
+    ports:
+      - "8000:8000"
+    depends_on:
+      - orchestrator

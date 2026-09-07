@@ -1,0 +1,2070 @@
+import json
+import time
+import urllib.error
+import urllib.request
+from pathlib import Path
+
+import streamlit as st
+
+
+# =========================================================
+# CONFIGURATION
+# =========================================================
+
+APP_URL = "http://localhost:8000/ask"
+RETRIEVAL_URL = "http://localhost:8001/retrieve"
+LLM_URL = "http://localhost:8002/generate"
+
+MODEL_NAME = "Qwen 2.5 Coder 1.5B"
+EMBEDDING_MODEL = "nomic-embed-text"
+
+
+st.set_page_config(
+    page_title="InvoiceIQ",
+    page_icon="",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+
+# =========================================================
+# CUSTOM CSS
+# =========================================================
+
+st.markdown(
+    """
+    <style>
+
+    .stApp {
+        background: #f5f7fb;
+    }
+
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+        max-width: 1400px;
+    }
+
+    section[data-testid="stSidebar"] {
+        background: #111827;
+    }
+
+    section[data-testid="stSidebar"] * {
+        color: #f9fafb;
+    }
+
+    section[data-testid="stSidebar"] .stRadio label {
+        color: #d1d5db;
+    }
+
+    .app-header {
+        background: linear-gradient(
+            135deg,
+            #111827 0%,
+            #1f2937 55%,
+            #2563eb 100%
+        );
+        padding: 30px 34px;
+        border-radius: 18px;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 30px rgba(17, 24, 39, 0.12);
+    }
+
+    .app-title {
+        font-size: 38px;
+        font-weight: 750;
+        color: white;
+        margin: 0;
+        letter-spacing: -1px;
+    }
+
+    .app-subtitle {
+        font-size: 16px;
+        color: #dbeafe;
+        margin-top: 7px;
+    }
+
+    .info-card {
+        background: white;
+        padding: 22px;
+        border-radius: 15px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.04);
+        min-height: 105px;
+    }
+
+    .card-label {
+        color: #6b7280;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .card-value {
+        color: #111827;
+        font-size: 24px;
+        font-weight: 700;
+        margin-top: 8px;
+    }
+
+    .card-small {
+        color: #6b7280;
+        font-size: 13px;
+        margin-top: 4px;
+    }
+
+    .answer-card {
+        background: white;
+        padding: 25px 28px;
+        border-radius: 16px;
+        border-left: 5px solid #2563eb;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+
+    .answer-label {
+        color: #2563eb;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .answer-text {
+        color: #111827;
+        font-size: 19px;
+        line-height: 1.6;
+    }
+
+    .source-card {
+        background: white;
+        padding: 18px;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 12px;
+    }
+
+    .source-title {
+        font-weight: 700;
+        color: #111827;
+        font-size: 16px;
+    }
+
+    .source-score {
+        color: #2563eb;
+        font-weight: 700;
+    }
+
+    .source-text {
+        color: #4b5563;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-top: 10px;
+    }
+
+    .pipeline {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 25px 0;
+    }
+
+    .pipeline-step {
+        background: white;
+        border: 1px solid #dbe3ef;
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .pipeline-arrow {
+        color: #2563eb;
+        font-weight: 700;
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #111827;
+        margin-top: 25px;
+        margin-bottom: 10px;
+    }
+
+    .section-description {
+        color: #6b7280;
+        margin-bottom: 20px;
+    }
+
+    .status-online {
+        color: #059669;
+        font-weight: 700;
+    }
+
+    .stButton > button {
+        border-radius: 9px;
+        font-weight: 600;
+        border: 1px solid #d1d5db;
+    }
+
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# =========================================================
+# SESSION STATE
+# =========================================================
+
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+if "last_result" not in st.session_state:
+    st.session_state.last_result = None
+
+if "retrieval_result" not in st.session_state:
+    st.session_state.retrieval_result = None
+
+if "llm_result" not in st.session_state:
+    st.session_state.llm_result = None
+
+if "selected_question" not in st.session_state:
+    st.session_state.selected_question = ""
+
+if "main_question" not in st.session_state:
+    st.session_state.main_question = st.session_state.selected_question
+
+if "pending_question" not in st.session_state:
+    st.session_state.pending_question = None
+
+# Apply a suggested question BEFORE the text-area widget
+# is instantiated. This avoids Streamlit's widget-state error.
+if st.session_state.pending_question is not None:
+    st.session_state.main_question = st.session_state.pending_question
+    st.session_state.selected_question = st.session_state.pending_question
+    st.session_state.pending_question = None
+
+if "llm_context" not in st.session_state:
+    st.session_state.llm_context = ""
+
+if "llm_question" not in st.session_state:
+    st.session_state.llm_question = ""
+
+if "response_latency" not in st.session_state:
+    st.session_state.response_latency = 0
+
+if "retrieval_latency" not in st.session_state:
+    st.session_state.retrieval_latency = 0
+
+
+# =========================================================
+# HELPER FUNCTIONS
+# =========================================================
+
+def post_json(url, payload, timeout=300):
+
+    data = json.dumps(payload).encode("utf-8")
+
+    request = urllib.request.Request(
+        url,
+        data=data,
+        headers={
+            "Content-Type": "application/json"
+        },
+        method="POST"
+    )
+
+    try:
+        with urllib.request.urlopen(
+            request,
+            timeout=timeout
+        ) as response:
+
+            return json.loads(
+                response.read().decode("utf-8")
+            )
+
+    except urllib.error.HTTPError as error:
+        try:
+            details = json.loads(error.read().decode("utf-8"))
+            message = details.get("error", str(error))
+        except (ValueError, UnicodeDecodeError):
+            message = str(error)
+        raise RuntimeError(message) from error
+
+
+def get_score(document):
+
+    return float(
+        document.get(
+            "score",
+            document.get(
+                "similarity",
+                0
+            )
+        )
+    )
+
+
+def build_context(documents):
+
+    return "\n\n".join(
+        document.get(
+            "text",
+            ""
+        ).strip()
+        for document in documents
+        if document.get(
+            "text",
+            ""
+        ).strip()
+    )
+
+
+def select_question(question):
+    st.session_state.pending_question = question
+
+
+def save_retrieval_context(question, documents):
+
+    st.session_state.llm_question = question
+
+    st.session_state.llm_context = build_context(
+        documents
+    )
+
+    st.session_state.retrieval_result = {
+        "question": question,
+        "results": documents
+    }
+
+
+# =========================================================
+# SIDEBAR
+# =========================================================
+
+st.sidebar.markdown(
+    """
+    <div style="
+        font-size:27px;
+        font-weight:750;
+        margin-bottom:5px;
+    ">
+        InvoiceIQ
+    </div>
+    <div style="
+        color:#9ca3af;
+        font-size:13px;
+        margin-bottom:25px;
+    ">
+        AI Invoice & Policy Assistant
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+page = st.sidebar.radio(
+    "DASHBOARDS",
+    [
+        "Application",
+        "Retrieval & Knowledge Base",
+        "LLM",
+        "Week 4 — Model Evaluation",
+        "Week 4 — Final Submission"
+    ]
+)
+
+st.sidebar.markdown("---")
+
+st.sidebar.markdown(
+    "<div style='font-weight:700;'>SYSTEM STATUS</div>",
+    unsafe_allow_html=True
+)
+
+st.sidebar.markdown(
+    "<span class='status-online'>●</span> Application :8000",
+    unsafe_allow_html=True
+)
+
+st.sidebar.markdown(
+    "<span class='status-online'>●</span> Retrieval :8001",
+    unsafe_allow_html=True
+)
+
+st.sidebar.markdown(
+    "<span class='status-online'>●</span> LLM :8002",
+    unsafe_allow_html=True
+)
+
+st.sidebar.markdown(
+    "<span class='status-online'>●</span> Orchestrator :8003",
+    unsafe_allow_html=True
+)
+
+st.sidebar.markdown("---")
+
+st.sidebar.caption("Current LLM")
+st.sidebar.write(MODEL_NAME)
+
+st.sidebar.caption("Embedding Model")
+st.sidebar.write(EMBEDDING_MODEL)
+
+
+# =========================================================
+# COMMON HEADER
+# =========================================================
+
+st.markdown(
+    """
+    <div class="app-header">
+        <div class="app-title">InvoiceIQ</div>
+        <div class="app-subtitle">
+            Intelligent invoice and policy assistant powered by
+            Retrieval-Augmented Generation
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# =========================================================
+# APPLICATION DASHBOARD
+# =========================================================
+
+if page == "Application":
+
+    st.markdown(
+        '<div class="section-title">Application Dashboard</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="section-description">'
+        'Ask questions about invoices, payments, contracts and policies.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    c1, c2, c3, c4 = st.columns(4)
+
+    with c1:
+        st.markdown(
+            """
+            <div class="info-card">
+                <div class="card-label">Application</div>
+                <div class="card-value">Online</div>
+                <div class="card-small">Port 8000</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with c2:
+        st.markdown(
+            """
+            <div class="info-card">
+                <div class="card-label">Knowledge Base</div>
+                <div class="card-value">Active</div>
+                <div class="card-small">RAG enabled</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with c3:
+        st.markdown(
+            f"""
+            <div class="info-card">
+                <div class="card-label">LLM</div>
+                <div class="card-value">Qwen</div>
+                <div class="card-small">1.5B Instruct</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with c4:
+        st.markdown(
+            """
+            <div class="info-card">
+                <div class="card-label">Pipeline</div>
+                <div class="card-value">RAG</div>
+                <div class="card-small">Retrieval enabled</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown("")
+
+    # -----------------------------------------------------
+    # Question
+    # -----------------------------------------------------
+
+    st.subheader("Ask InvoiceIQ")
+
+    question = st.text_area(
+        "Your question",
+        key="main_question",
+        placeholder="Example: How long do we have to pay an invoice?",
+        height=100
+    )
+
+    st.write("Suggested questions")
+
+    suggestions = [
+        "How long do we have to pay an invoice?",
+        "What happens if an invoice is paid late?",
+        "How long do I have to dispute an invoice?",
+        "What happens after contract termination?"
+    ]
+
+    suggestion_cols = st.columns(4)
+
+    for i, suggestion in enumerate(suggestions):
+
+        suggestion_cols[i].button(
+            suggestion,
+            key=f"suggestion_{i}",
+            on_click=select_question,
+            args=(suggestion,)
+        )
+
+    st.markdown("")
+
+    llm_run_col1, llm_run_col2 = st.columns([1, 2])
+
+    with llm_run_col1:
+        selected_run_model = st.selectbox(
+            "Run with specific LLM",
+            [
+                "Qwen 2.5 Coder 1.5B",
+                "LLaMA 3.2 3B",
+                "DeepSeek Coder 1.3B"
+            ],
+            key="specific_run_model"
+        )
+
+    model_map = {
+        "Qwen 2.5 Coder 1.5B": "qwen2.5-coder:1.5b-instruct",
+        "LLaMA 3.2 3B": "llama3.2:3b",
+        "DeepSeek Coder 1.3B": "deepseek-coder:1.3b"
+    }
+
+    with llm_run_col2:
+        specific_llm_run = st.button(
+            "Run Text with Selected LLM",
+            type="secondary",
+            use_container_width=True
+        )
+
+    if specific_llm_run:
+
+        question = st.session_state.main_question.strip()
+
+        if not question:
+
+            st.warning(
+                "Please enter a question."
+            )
+
+        else:
+
+            start = time.perf_counter()
+
+            try:
+
+                result = post_json(
+                    APP_URL,
+                    {
+                        "question": question,
+                        "model": model_map[selected_run_model]
+                    }
+                )
+
+                latency = time.perf_counter() - start
+
+                result["ui_latency"] = round(
+                    latency,
+                    3
+                )
+
+                st.session_state.app_result = result
+                st.session_state.main_question = question
+                st.rerun()
+
+            except Exception as e:
+
+                st.error(
+                    f"Unable to contact the application service: {e}"
+                )
+
+    if st.button(
+        "Ask InvoiceIQ",
+        type="primary",
+        use_container_width=True
+    ):
+
+        question = st.session_state.main_question.strip()
+
+        if not question:
+
+            st.warning(
+                "Please enter a question."
+            )
+
+        else:
+
+            start = time.perf_counter()
+
+            try:
+
+                result = post_json(
+                    APP_URL,
+                    {
+                        "question": question
+                    }
+                )
+
+                latency = time.perf_counter() - start
+
+                result["ui_latency"] = round(
+                    latency,
+                    3
+                )
+
+                documents = result.get(
+                    "retrieved_documents",
+                    []
+                )
+
+                # -----------------------------------------
+                # Save the complete RAG result
+                # -----------------------------------------
+
+                st.session_state.last_result = result
+
+                st.session_state.selected_question = (
+                    question
+                )
+
+
+                st.session_state.response_latency = round(
+                    latency,
+                    3
+                )
+
+                # -----------------------------------------
+                # Automatically save retrieval information
+                # -----------------------------------------
+
+                save_retrieval_context(
+                    question,
+                    documents
+                )
+
+                # -----------------------------------------
+                # Save the answer already generated
+                # by the complete RAG pipeline
+                # -----------------------------------------
+
+                st.session_state.llm_result = {
+                    "question": question,
+                    "answer": result.get(
+                        "answer",
+                        ""
+                    )
+                }
+
+                st.session_state.history.insert(
+                    0,
+                    {
+                        "question": question,
+                        "answer": result.get(
+                            "answer",
+                            ""
+                        ),
+                        "latency": round(
+                            latency,
+                            3
+                        )
+                    }
+                )
+
+            except Exception as e:
+
+                st.error(
+                    f"Unable to contact the application service: {e}"
+                )
+
+    # -----------------------------------------------------
+    # Answer
+    # -----------------------------------------------------
+
+    result = st.session_state.last_result
+
+    if result:
+
+        st.markdown("---")
+
+        st.markdown(
+            """
+            <div class="answer-card">
+                <div class="answer-label">
+                    AI Answer
+                </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            f"""
+                <div class="answer-text">
+                    {result.get("answer", "No answer returned.")}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        m1, m2, m3 = st.columns(3)
+
+        with m1:
+            st.metric(
+                "Response Time",
+                f'{result.get("ui_latency", 0)} sec'
+            )
+
+        with m2:
+            st.metric(
+                "Documents Retrieved",
+                len(
+                    result.get(
+                        "retrieved_documents",
+                        []
+                    )
+                )
+            )
+
+        with m3:
+            st.metric(
+                "Retrieval",
+                "Enabled"
+            )
+
+        st.subheader("Sources Used")
+
+        for document in result.get(
+            "retrieved_documents",
+            []
+        ):
+
+            source = document.get(
+                "source",
+                "Unknown"
+            )
+
+            score = get_score(document)
+
+            st.markdown(
+                f"""
+                <div class="source-card">
+                    <div class="source-title">
+                        {source}
+                    </div>
+                    <div>
+                        Similarity:
+                        <span class="source-score">
+                            {score:.4f}
+                        </span>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+    # -----------------------------------------------------
+    # Recent Questions
+    # -----------------------------------------------------
+
+    if st.session_state.history:
+
+        st.markdown("---")
+
+        st.subheader("Recent Questions")
+
+        for item in st.session_state.history[:5]:
+
+            with st.expander(
+                item["question"]
+            ):
+
+                st.write(
+                    item["answer"]
+                )
+
+                st.caption(
+                    f'Response time: '
+                    f'{item["latency"]} seconds'
+                )
+
+
+# =========================================================
+# RETRIEVAL DASHBOARD
+# =========================================================
+
+elif page == "Retrieval & Knowledge Base":
+
+    st.markdown(
+        '<div class="section-title">'
+        'Retrieval & Knowledge Base'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="section-description">'
+        'Inspect the knowledge retrieved by the RAG system '
+        'before the answer is generated.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    # -----------------------------------------------------
+    # Use the SAME question from Application
+    # -----------------------------------------------------
+
+    question = st.session_state.main_question.strip()
+
+    if not question:
+
+        st.info(
+            "Ask a question from the Application dashboard first."
+        )
+
+    else:
+
+        st.text_input(
+            "Question",
+            value=question,
+            disabled=True
+        )
+
+        if st.button(
+            "Run Retrieval",
+            type="primary"
+        ):
+
+            start = time.perf_counter()
+
+            try:
+
+                retrieval = post_json(
+                    RETRIEVAL_URL,
+                    {
+                        "question": question
+                    }
+                )
+
+                latency = time.perf_counter() - start
+
+                documents = retrieval.get(
+                    "results",
+                    []
+                )
+
+                st.session_state.retrieval_latency = round(
+                    latency,
+                    3
+                )
+
+                save_retrieval_context(
+                    question,
+                    documents
+                )
+
+            except Exception as e:
+
+                st.error(
+                    f"Unable to contact retrieval service: {e}"
+                )
+
+        retrieval = st.session_state.retrieval_result
+
+        if retrieval:
+
+            documents = retrieval.get(
+                "results",
+                []
+            )
+
+            st.markdown("---")
+
+            st.subheader("Retrieval Overview")
+
+            r1, r2, r3 = st.columns(3)
+
+            scores = [
+                get_score(document)
+                for document in documents
+            ]
+
+            best_score = max(
+                scores,
+                default=0
+            )
+
+            with r1:
+
+                st.metric(
+                    "Documents Retrieved",
+                    len(documents)
+                )
+
+            with r2:
+
+                st.metric(
+                    "Best Similarity",
+                    f"{best_score:.4f}"
+                )
+
+            with r3:
+
+                st.metric(
+                    "Retrieval Time",
+                    f'{st.session_state.retrieval_latency} sec'
+                )
+
+            st.subheader("Retrieved Documents")
+
+            # -------------------------------------------------
+            # Clean retrieval cards
+            # -------------------------------------------------
+
+            for index, document in enumerate(
+                documents,
+                start=1
+            ):
+
+                source = document.get(
+                    "source",
+                    "Unknown"
+                )
+
+                score = get_score(document)
+
+                text = document.get(
+                    "text",
+                    ""
+                ).strip()
+
+                # Clean native Streamlit result card.
+                # No HTML is used here, so the actual
+                # retrieved content is displayed normally.
+
+                with st.container(border=True):
+
+                    st.markdown(
+                        f"### {index}. {source}"
+                    )
+
+                    st.markdown(
+                        f"**Similarity Score:** "
+                        f"**{score:.4f}**"
+                    )
+
+                    st.progress(
+                        min(
+                            max(score, 0.0),
+                            1.0
+                        )
+                    )
+
+                    if score >= 0.70:
+
+                        st.caption(
+                            "High relevance"
+                        )
+
+                    elif score >= 0.50:
+
+                        st.caption(
+                            "Moderate relevance"
+                        )
+
+                    else:
+
+                        st.caption(
+                            "Low relevance"
+                        )
+
+                    st.markdown(
+                        "**Retrieved Content**"
+                    )
+
+                    st.write(text)
+
+            # -------------------------------------------------
+            # Actual context
+            # -------------------------------------------------
+
+            st.markdown("---")
+
+            st.subheader(
+                "Context Sent to LLM"
+            )
+
+            st.text_area(
+                "Retrieved context",
+                value=st.session_state.llm_context,
+                height=250,
+                disabled=True,
+                label_visibility="collapsed"
+            )
+
+            # -------------------------------------------------
+            # RAG pipeline
+            # -------------------------------------------------
+
+            st.markdown("---")
+
+            st.subheader(
+                "RAG Processing Pipeline"
+            )
+
+            pipeline = st.columns(11)
+
+            pipeline[0].markdown("**User Question**")
+            pipeline[1].markdown("→")
+            pipeline[2].markdown("**Query Embedding**")
+            pipeline[3].markdown("→")
+            pipeline[4].markdown("**Vector Similarity**")
+            pipeline[5].markdown("→")
+            pipeline[6].markdown("**Relevant Documents**")
+            pipeline[7].markdown("→")
+            pipeline[8].markdown("**Context**")
+            pipeline[9].markdown("→")
+            pipeline[10].markdown("**LLM**")
+
+
+# =========================================================
+# LLM DASHBOARD
+# =========================================================
+
+elif page == "LLM":
+
+    st.markdown(
+        '<div class="section-title">'
+        'LLM Dashboard'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="section-description">'
+        'Inspect how the LLM receives context and generates '
+        'the final response.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    # -----------------------------------------------------
+    # Model cards
+    # -----------------------------------------------------
+
+    l1, l2, l3 = st.columns(3)
+
+    with l1:
+
+        st.markdown(
+            f"""
+            <div class="info-card">
+                <div class="card-label">
+                    Current Model
+                </div>
+                <div class="card-value">
+                    Qwen
+                </div>
+                <div class="card-small">
+                    Qwen 2.5 Coder 1.5B
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with l2:
+
+        st.markdown(
+            """
+            <div class="info-card">
+                <div class="card-label">
+                    Provider
+                </div>
+                <div class="card-value">
+                    Ollama
+                </div>
+                <div class="card-small">
+                    Local inference
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with l3:
+
+        st.markdown(
+            """
+            <div class="info-card">
+                <div class="card-label">
+                    Status
+                </div>
+                <div class="card-value">
+                    Online
+                </div>
+                <div class="card-small">
+                    LLM Service :8002
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+
+    # -----------------------------------------------------
+    # Automatically use latest Application question
+    # and retrieved context
+    # -----------------------------------------------------
+
+    question = st.session_state.llm_question.strip()
+    context = st.session_state.llm_context.strip()
+
+    if not question:
+
+        st.info(
+            "Ask a question from the Application dashboard first."
+        )
+
+    else:
+
+        st.subheader("Question")
+
+        st.text_area(
+            "Question",
+            value=question,
+            height=80,
+            disabled=True,
+            label_visibility="collapsed"
+        )
+
+        st.subheader(
+            "Context provided to the LLM"
+        )
+
+        if context:
+
+            st.text_area(
+                "Retrieved context",
+                value=context,
+                height=260,
+                disabled=True,
+                label_visibility="collapsed"
+            )
+
+        else:
+
+            st.warning(
+                "No retrieved context is available."
+            )
+
+        # -------------------------------------------------
+        # No Generate Answer button.
+        # The answer was already generated by:
+        #
+        # Application
+        #      ↓
+        # Orchestrator
+        #      ↓
+        # Retrieval
+        #      ↓
+        # LLM
+        #
+        # -------------------------------------------------
+
+        llm_result = st.session_state.llm_result
+
+        if llm_result:
+
+            st.markdown("---")
+
+            st.subheader(
+                "LLM Response"
+            )
+
+            st.markdown(
+                f"""
+                <div class="answer-card">
+
+                    <div class="answer-label">
+                        Generated Response
+                    </div>
+
+                    <div class="answer-text">
+                        {llm_result.get(
+                            "answer",
+                            "No response returned."
+                        )}
+                    </div>
+
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        # -------------------------------------------------
+        # Prompt Preview
+        # -------------------------------------------------
+
+        st.subheader(
+            "Prompt Sent to LLM"
+        )
+
+        prompt = f"""Answer the user's question using only the provided context.
+
+Context:
+{context}
+
+Question:
+{question}
+
+Give a concise answer based on the context.
+"""
+
+        st.text_area(
+            "Prompt",
+            value=prompt,
+            height=260,
+            disabled=True,
+            label_visibility="collapsed"
+        )
+
+        # -------------------------------------------------
+        # LLM flow
+        # -------------------------------------------------
+
+        st.markdown("---")
+
+        st.subheader(
+            "LLM Processing Flow"
+        )
+
+        flow = st.columns(11)
+
+        flow[0].markdown("**Question**")
+        flow[1].markdown("**→**")
+        flow[2].markdown("**Retrieved Context**")
+        flow[3].markdown("**→**")
+        flow[4].markdown("**Prompt**")
+        flow[5].markdown("**→**")
+        flow[6].markdown("**Ollama**")
+        flow[7].markdown("**→**")
+        flow[8].markdown("**Qwen**")
+        flow[9].markdown("**→**")
+        flow[10].markdown("**Response**")
+
+# =========================================================
+# WEEK 4 — MODEL EVALUATION DASHBOARD
+# =========================================================
+
+elif page == "Week 4 — Model Evaluation":
+
+    import os
+    from datetime import datetime
+
+    st.markdown(
+        '<div class="section-title">Week 4 — Model Evaluation</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="section-description">'
+        'Evaluate Qwen, LLaMA, and DeepSeek using the same InvoiceIQ '
+        'application, knowledge base, retrieval pipeline, and 25 questions.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    # -----------------------------------------------------
+    # Configuration
+    # -----------------------------------------------------
+
+    EVAL_MODELS = {
+        "Qwen 2.5 Coder 1.5B": "qwen2.5-coder:1.5b-instruct",
+        "LLaMA 3.2 3B": "llama3.2:3b",
+        "DeepSeek Coder 1.3B": "deepseek-coder:1.3b"
+    }
+
+    QUESTIONS_PATH = "evaluation/questions.json"
+
+    if not os.path.exists(QUESTIONS_PATH):
+        st.error("evaluation/questions.json was not found.")
+        st.stop()
+
+    with open(QUESTIONS_PATH, "r", encoding="utf-8") as f:
+        evaluation_questions = json.load(f)
+
+    # -----------------------------------------------------
+    # Semantic scoring
+    # -----------------------------------------------------
+
+    def score_answer(qid, answer):
+        # Use the same rubric as the final-submission dashboard. The older
+        # inline rubric misclassified answers that preserve a negation later
+        # in the sentence (for example, "termination does not remove...").
+        from week4_submission_page import score_policy_answer
+
+        return score_policy_answer(qid, answer)
+
+        text = (answer or "").lower().strip()
+
+        negative = [
+            "no relevant information was found",
+            "not found in the knowledge base"
+        ]
+
+        if any(x in text for x in negative):
+            return False
+
+        def has(*terms):
+            return all(term in text for term in terms)
+
+        if qid in {"Q01", "Q11", "Q12"}:
+            return "30" in text and (
+                "day" in text or "days" in text
+            ) and "invoice" in text
+
+        if qid == "Q02":
+            return (
+                ("interest" in text or "charge" in text)
+                and ("late" in text or "payment" in text)
+            )
+
+        if qid in {"Q03", "Q13"}:
+            return "10" in text and "business" in text
+
+        if qid in {"Q04", "Q19"}:
+            return (
+                "yes" in text
+                and "undisputed" in text
+                and ("pay" in text or "payable" in text)
+            )
+
+        if qid in {"Q05", "Q15"}:
+            return (
+                "30" in text
+                and "day" in text
+                and "notice" in text
+            )
+
+        if qid in {"Q06", "Q20"}:
+            return (
+                "immediate" in text
+                and "termination" in text
+                and "15" in text
+                and ("breach" in text or "correct" in text)
+            )
+
+        if qid in {"Q07", "Q08", "Q09"}:
+            return text.startswith("no") or "no." in text[:20]
+
+        if qid in {"Q10", "Q17"}:
+            return (
+                "confidential" in text
+                and ("intellectual" in text or "ip" in text)
+                and "payment" in text
+            )
+
+        if qid == "Q14":
+            return (
+                ("no" in text[:30] or "cannot" in text or "not" in text[:40])
+                and "undisputed" in text
+                and ("pay" in text or "payable" in text)
+            )
+
+        if qid == "Q16":
+            return "15" in text and "day" in text
+
+        if qid == "Q18":
+            return (
+                ("july" in text and "1" in text)
+                or ("30" in text and ("june" in text or "invoice" in text))
+            )
+
+        if qid == "Q21":
+            return (
+                ("no" in text[:30] or "cannot" in text or "remain" in text)
+                and "payment" in text
+            )
+
+        if qid == "Q22":
+            return (
+                ("no" in text[:35] or "cannot" in text)
+                and "30" in text
+                and "notice" in text
+                and ("breach" in text or "immediate" in text)
+            )
+
+        if qid == "Q23":
+            return (
+                "not specified" in text
+                or "no specific" in text
+                or "not stated" in text
+                or "unspecified" in text
+            )
+
+        if qid == "Q24":
+            return (
+                "not specified" in text
+                or "not stated" in text
+                or "unspecified" in text
+            )
+
+        if qid == "Q25":
+            return (
+                "30" in text
+                and "day" in text
+                and (
+                    "no maximum" in text
+                    or "not state" in text
+                    or "does not state" in text
+                    or "maximum" in text
+                )
+            )
+
+        return False
+
+    def grounding_status(response, answer_is_correct=None):
+        docs = response.get("retrieved_documents", [])
+
+        if docs:
+            if answer_is_correct is False:
+                return "Unsupported despite retrieved context"
+            top_similarity = docs[0].get("similarity", 0)
+            if top_similarity >= 0.60:
+                return "Grounded and correct"
+            return "Weakly grounded"
+
+        answer = response.get("answer", "")
+        if answer:
+            return "Potential hallucination"
+        return "No response"
+
+    # -----------------------------------------------------
+    # Live evaluation helpers
+    # -----------------------------------------------------
+
+    def run_single_question(question, model):
+        start = time.perf_counter()
+
+        response = post_json(
+            APP_URL,
+            {
+                "question": question["question"],
+                "model": EVAL_MODELS[model]
+            }
+        )
+
+        latency = time.perf_counter() - start
+
+        answer = response.get("answer", "")
+        docs = response.get("retrieved_documents", [])
+
+        top_similarity = (
+            docs[0].get("similarity", 0)
+            if docs else 0
+        )
+
+        answer_is_correct = score_answer(question["id"], answer)
+
+        return {
+            "id": question["id"],
+            "question": question["question"],
+            "expected": question["expected"],
+            "model": model,
+            "answer": answer,
+            "correct": answer_is_correct,
+            "latency_seconds": round(latency, 3),
+            "top1_similarity": round(top_similarity, 4),
+            "retrieved_documents": docs,
+            "grounding": grounding_status(response, answer_is_correct)
+        }
+
+    def run_model_evaluation(model):
+        results = []
+
+        progress = st.progress(
+            0,
+            text=f"Running {model}: 0/{len(evaluation_questions)}"
+        )
+
+        for i, question_item in enumerate(evaluation_questions, start=1):
+            try:
+                result = run_single_question(
+                    question_item,
+                    model
+                )
+                results.append(result)
+
+            except Exception as e:
+                results.append({
+                    "id": question_item["id"],
+                    "question": question_item["question"],
+                    "expected": question_item["expected"],
+                    "model": model,
+                    "answer": f"Evaluation error: {e}",
+                    "correct": False,
+                    "latency_seconds": 0,
+                    "top1_similarity": 0,
+                    "retrieved_documents": [],
+                    "grounding": "No response"
+                })
+
+            progress.progress(
+                i / len(evaluation_questions),
+                text=f"Running {model}: {i}/{len(evaluation_questions)}"
+            )
+
+        progress.empty()
+
+        return results
+
+    # -----------------------------------------------------
+    # Session state
+    # -----------------------------------------------------
+
+    if "week4_live_results" not in st.session_state:
+        st.session_state.week4_live_results = {}
+
+    if "week4_last_run" not in st.session_state:
+        st.session_state.week4_last_run = None
+
+    # -----------------------------------------------------
+    # Run controls
+    # -----------------------------------------------------
+
+    st.subheader("Run Evaluation")
+
+    st.info(
+        "These buttons run the actual InvoiceIQ RAG pipeline. "
+        "Only the LLM model changes; the questions, knowledge base, "
+        "embeddings, and retrieval service remain the same."
+    )
+
+    all_col1, all_col2 = st.columns([2, 1])
+
+    with all_col1:
+        run_all = st.button(
+            "Run Fresh Evaluation — All 3 Models",
+            type="primary",
+            use_container_width=True
+        )
+
+    with all_col2:
+        if st.session_state.week4_last_run:
+            st.caption(
+                f"Last fresh run: {st.session_state.week4_last_run}"
+            )
+
+    if run_all:
+
+        for model_name in EVAL_MODELS:
+            with st.expander(
+                f"Running {model_name}",
+                expanded=True
+            ):
+                st.session_state.week4_live_results[
+                    model_name
+                ] = run_model_evaluation(model_name)
+
+        st.session_state.week4_last_run = (
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
+
+        st.success(
+            "Fresh evaluation completed: 75 model-question runs."
+        )
+
+    st.markdown("### Individual Model Runs")
+
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        run_qwen = st.button(
+            "Run Qwen — 25 Questions",
+            use_container_width=True
+        )
+
+    with c2:
+        run_llama = st.button(
+            "Run LLaMA — 25 Questions",
+            use_container_width=True
+        )
+
+    with c3:
+        run_deepseek = st.button(
+            "Run DeepSeek — 25 Questions",
+            use_container_width=True
+        )
+
+    selected_model_to_run = None
+
+    if run_qwen:
+        selected_model_to_run = "Qwen 2.5 Coder 1.5B"
+    elif run_llama:
+        selected_model_to_run = "LLaMA 3.2 3B"
+    elif run_deepseek:
+        selected_model_to_run = "DeepSeek Coder 1.3B"
+
+    if selected_model_to_run:
+
+        st.session_state.week4_live_results[
+            selected_model_to_run
+        ] = run_model_evaluation(selected_model_to_run)
+
+        st.session_state.week4_last_run = (
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
+
+        st.success(
+            f"{selected_model_to_run}: fresh 25-question evaluation completed."
+        )
+
+    # -----------------------------------------------------
+    # Selected question — Run Text
+    # -----------------------------------------------------
+
+    st.markdown("---")
+    st.subheader("Run Text — Specific LLM")
+
+    question_labels = [
+        f'{q["id"]}: {q["question"]}'
+        for q in evaluation_questions
+    ]
+
+    selected_label = st.selectbox(
+        "Select a question",
+        question_labels,
+        key="week4_selected_question"
+    )
+
+    selected_id = selected_label.split(":", 1)[0]
+
+    selected_question = next(
+        q for q in evaluation_questions
+        if q["id"] == selected_id
+    )
+
+    run_col1, run_col2 = st.columns([1, 2])
+
+    with run_col1:
+        selected_specific_model = st.selectbox(
+            "Select LLM",
+            list(EVAL_MODELS.keys()),
+            key="week4_specific_model"
+        )
+
+    with run_col2:
+        run_text = st.button(
+            "Run Text with Selected LLM",
+            type="primary",
+            use_container_width=True
+        )
+
+    if run_text:
+
+        try:
+            result = run_single_question(
+                selected_question,
+                selected_specific_model
+            )
+
+            st.session_state.week4_single_result = result
+
+        except Exception as e:
+            st.error(
+                f"Unable to run the selected model: {e}"
+            )
+
+    # -----------------------------------------------------
+    # Overall comparison
+    # -----------------------------------------------------
+
+    st.markdown("---")
+    st.subheader("Model Comparison")
+
+    comparison = []
+
+    for model_name in EVAL_MODELS:
+
+        results = st.session_state.week4_live_results.get(
+            model_name,
+            []
+        )
+
+        if not results:
+            comparison.append({
+                "Model": model_name,
+                "Correct": "—",
+                "Incorrect": "—",
+                "Accuracy": "—",
+                "Avg Latency": "—",
+                "Min Latency": "—",
+                "Max Latency": "—",
+                "Avg Top-1 Similarity": "—",
+                "Grounded": "—",
+                "Unsupported Answers": "—"
+            })
+            continue
+
+        correct = sum(
+            1 for x in results
+            if x.get("correct")
+        )
+
+        latencies = [
+            x["latency_seconds"]
+            for x in results
+        ]
+
+        similarities = [
+            x["top1_similarity"]
+            for x in results
+            if x["retrieved_documents"]
+        ]
+
+        grounded = sum(
+            1 for x in results
+            if x["grounding"] == "Grounded"
+        )
+
+        unsupported_answers = sum(
+            1 for x in results
+            if x["grounding"] == "Unsupported despite retrieved context"
+        )
+
+        comparison.append({
+            "Model": model_name,
+            "Correct": f"{correct}/{len(results)}",
+            "Incorrect": f"{len(results) - correct}/{len(results)}",
+            "Accuracy": f"{(correct / len(results)) * 100:.1f}%",
+            "Avg Latency": f"{sum(latencies) / len(latencies):.3f}s",
+            "Min Latency": f"{min(latencies):.3f}s",
+            "Max Latency": f"{max(latencies):.3f}s",
+            "Avg Top-1 Similarity": (
+                f"{sum(similarities) / len(similarities):.4f}"
+                if similarities else "N/A"
+            ),
+            "Grounded": f"{grounded}/{len(results)}",
+            "Unsupported Answers": str(unsupported_answers)
+        })
+
+    st.dataframe(
+        comparison,
+        use_container_width=True,
+        hide_index=True
+    )
+
+    # -----------------------------------------------------
+    # Selected question comparison
+    # -----------------------------------------------------
+
+    st.markdown("---")
+    st.subheader("Selected Question — All Model Responses")
+
+    st.markdown(
+        f"**{selected_question['id']} — {selected_question['question']}**"
+    )
+
+    st.markdown(
+        f"**Expected Answer:** {selected_question['expected']}"
+    )
+
+    cols = st.columns(3)
+
+    for col, model_name in zip(cols, EVAL_MODELS):
+
+        with col:
+
+            st.markdown(f"### {model_name}")
+
+            live_results = st.session_state.week4_live_results.get(
+                model_name,
+                []
+            )
+
+            item = next(
+                (
+                    x for x in live_results
+                    if x["id"] == selected_id
+                ),
+                None
+            )
+
+            # Prefer the just-run specific question result.
+            single = st.session_state.get(
+                "week4_single_result"
+            )
+
+            if (
+                single
+                and single.get("id") == selected_id
+                and single.get("model") == model_name
+            ):
+                item = single
+
+            if not item:
+                st.info(
+                    "Run this model or run the full evaluation "
+                    "to display a fresh result."
+                )
+                continue
+
+            if item["correct"]:
+                st.success("CORRECT")
+            else:
+                st.error("INCORRECT")
+
+            st.markdown("**Model Answer**")
+            st.write(item["answer"])
+
+            m1, m2 = st.columns(2)
+
+            with m1:
+                st.metric(
+                    "Latency",
+                    f"{item['latency_seconds']:.3f}s"
+                )
+
+            with m2:
+                st.metric(
+                    "Top-1 Similarity",
+                    f"{item['top1_similarity']:.4f}"
+                )
+
+            st.markdown(
+                f"**Grounding / Hallucination:** "
+                f"{item['grounding']}"
+            )
+
+            docs = item.get(
+                "retrieved_documents",
+                []
+            )
+
+            with st.expander(
+                f"Retrieved Context ({len(docs)} documents)"
+            ):
+
+                if docs:
+
+                    for i, doc in enumerate(docs, start=1):
+
+                        st.markdown(
+                            f"**Document {i} — "
+                            f"Similarity: "
+                            f"{doc.get('similarity', 0):.4f}**"
+                        )
+
+                        st.write(
+                            doc.get(
+                                "text",
+                                doc.get(
+                                    "content",
+                                    "No context text returned."
+                                )
+                            )
+                        )
+
+                else:
+                    st.write(
+                        "No relevant context was retrieved."
+                    )
+
+    # -----------------------------------------------------
+    # Detailed evaluation results
+    # -----------------------------------------------------
+
+    st.markdown("---")
+    st.subheader("Detailed Evaluation Results")
+
+    detail_model = st.selectbox(
+        "Select model for detailed 25-question results",
+        list(EVAL_MODELS.keys()),
+        key="week4_detail_model"
+    )
+
+    detail_results = st.session_state.week4_live_results.get(
+        detail_model,
+        []
+    )
+
+    if not detail_results:
+
+        st.info(
+            "Run an evaluation for this model to see the "
+            "question-by-question results."
+        )
+
+    else:
+
+        for item in detail_results:
+
+            status = (
+                "CORRECT"
+                if item["correct"]
+                else "INCORRECT"
+            )
+
+            with st.expander(
+                f'{item["id"]} — {status} — {item["question"]}'
+            ):
+
+                st.markdown(
+                    f"**Question:** {item['question']}"
+                )
+
+                st.markdown(
+                    f"**Expected Answer:** {item['expected']}"
+                )
+
+                st.markdown(
+                    f"**Model Answer:** {item['answer']}"
+                )
+
+                r1, r2, r3 = st.columns(3)
+
+                with r1:
+                    st.metric(
+                        "Correct / Incorrect",
+                        status
+                    )
+
+                with r2:
+                    st.metric(
+                        "Latency",
+                        f"{item['latency_seconds']:.3f}s"
+                    )
+
+                with r3:
+                    st.metric(
+                        "Top-1 Similarity",
+                        f"{item['top1_similarity']:.4f}"
+                    )
+
+                st.markdown(
+                    f"**Grounding / Hallucination:** "
+                    f"{item['grounding']}"
+                )
+
+                docs = item.get(
+                    "retrieved_documents",
+                    []
+                )
+
+                with st.expander(
+                    f"Retrieved Context ({len(docs)} documents)"
+                ):
+
+                    if docs:
+
+                        for i, doc in enumerate(docs, start=1):
+
+                            st.markdown(
+                                f"**Document {i} — "
+                                f"Similarity: "
+                                f"{doc.get('similarity', 0):.4f}**"
+                            )
+
+                            st.write(
+                                doc.get(
+                                    "text",
+                                    doc.get(
+                                        "content",
+                                        "No context text returned."
+                                    )
+                                )
+                            )
+
+                    else:
+                        st.write(
+                            "No relevant information was retrieved."
+                        )
+
+    # -----------------------------------------------------
+    # Evaluation pipeline
+    # -----------------------------------------------------
+
+    st.markdown("---")
+    st.subheader("Evaluation Pipeline")
+
+    pipeline = st.columns(9)
+
+    pipeline[0].markdown("**Question**")
+    pipeline[1].markdown("→")
+    pipeline[2].markdown("**Retrieval**")
+    pipeline[3].markdown("→")
+    pipeline[4].markdown("**Context**")
+    pipeline[5].markdown("→")
+    pipeline[6].markdown("**LLM**")
+    pipeline[7].markdown("→")
+    pipeline[8].markdown("**Response**")
+
+    st.info(
+        "QUESTION → RETRIEVED CONTEXT → LLM RESPONSE. "
+        "The evaluation measures retrieval quality, response quality, "
+        "correctness, latency, and grounding using the same pipeline."
+    )
+
+    st.subheader("Out-of-Context Protection")
+
+    st.write(
+        "Questions without sufficiently relevant knowledge-base "
+        "documents are rejected before reaching the LLM. "
+        "This prevents unsupported answers from general model knowledge."
+    )
+
+
+# =========================================================
+# WEEK 4 — FINAL SUBMISSION DASHBOARD
+# =========================================================
+
+elif page == "Week 4 — Final Submission":
+
+    import importlib
+    import week4_submission_page
+
+    importlib.reload(week4_submission_page)
+
+    week4_submission_page.render_week4_submission(
+        app_url=APP_URL,
+        project_root=Path(__file__).resolve().parent.parent,
+        post_json=post_json
+    )

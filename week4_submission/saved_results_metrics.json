@@ -1,0 +1,38 @@
+[
+  {
+    "model": "DeepSeek Coder 1.3B",
+    "questions": 25,
+    "accuracy_percent": 76.0,
+    "answer_relevance_percent": 76.0,
+    "retrieval_recall_at_4_percent": 100.0,
+    "retrieval_mrr_at_4": 0.94,
+    "mean_top1_similarity": 0.7955,
+    "unsupported_or_contradictory_rate_percent": 24.0,
+    "average_latency_seconds": 1.53,
+    "p95_latency_seconds": 2.216
+  },
+  {
+    "model": "Qwen 2.5 Coder 1.5B",
+    "questions": 25,
+    "accuracy_percent": 64.0,
+    "answer_relevance_percent": 64.0,
+    "retrieval_recall_at_4_percent": 100.0,
+    "retrieval_mrr_at_4": 0.94,
+    "mean_top1_similarity": 0.7955,
+    "unsupported_or_contradictory_rate_percent": 36.0,
+    "average_latency_seconds": 2.088,
+    "p95_latency_seconds": 2.653
+  },
+  {
+    "model": "LLaMA 3.2 3B",
+    "questions": 25,
+    "accuracy_percent": 64.0,
+    "answer_relevance_percent": 64.0,
+    "retrieval_recall_at_4_percent": 100.0,
+    "retrieval_mrr_at_4": 0.94,
+    "mean_top1_similarity": 0.7955,
+    "unsupported_or_contradictory_rate_percent": 36.0,
+    "average_latency_seconds": 2.437,
+    "p95_latency_seconds": 3.407
+  }
+]
