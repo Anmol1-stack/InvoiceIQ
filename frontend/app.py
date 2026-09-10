@@ -605,7 +605,7 @@ if page == "Application":
                     3
                 )
 
-                st.session_state.app_result = result
+                st.session_state.last_result = result
                 st.session_state.main_question = question
                 st.rerun()
 

@@ -1,5 +1,4 @@
-import ollama, re
-
+import ollama, re, math
 MODEL = "qwen2.5-coder:1.5b-instruct"
 
 def generate(prompt, tagged=False):
