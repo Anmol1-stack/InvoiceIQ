@@ -1,9 +1,10 @@
-"""Separate Week 4 evidence page for the InvoiceIQ Streamlit dashboard."""
+"""Separate final-submission evidence page for the InvoiceIQ dashboard."""
 
 import json
 import shutil
 import statistics
 import subprocess
+import sys
 import threading
 import time
 from datetime import datetime
@@ -44,7 +45,7 @@ def _read_json(path, fallback):
 
 
 def score_policy_answer(question_id, answer):
-    """Transparent factual rubric shared by the Week 4 written report."""
+    """Transparent factual rubric shared by the written report."""
     text = (answer or "").lower().strip()
     if "no relevant information" in text or "not found in the knowledge base" in text:
         return False
@@ -123,27 +124,63 @@ class _OllamaResourceSampler:
         self.stop_event = threading.Event()
         self.thread = None
         self.gpu_available = bool(shutil.which("nvidia-smi"))
+        self._cpu_times = {}
+        self._last_sample_at = None
 
     def _take_sample(self):
-        if psutil is None:
-            return
-
-        cpu = memory = 0.0
+        cpu = None
+        memory = 0.0
         ollama_detected = False
-        for process in psutil.process_iter(["name", "exe"]):
+        sampled_at = time.perf_counter()
+        elapsed = (
+            sampled_at - self._last_sample_at
+            if self._last_sample_at is not None else None
+        )
+        if psutil is not None:
+            for process in psutil.process_iter(["name", "exe"]):
+                try:
+                    name = (process.info.get("name") or "").lower()
+                    executable = (process.info.get("exe") or "").lower()
+                    if "ollama" in name or "ollama" in executable:
+                        ollama_detected = True
+                        process_times = process.cpu_times()
+                        current_cpu_time = process_times.user + process_times.system
+                        previous_cpu_time = self._cpu_times.get(process.pid)
+                        if previous_cpu_time is not None and elapsed and elapsed > 0:
+                            cpu = (cpu or 0.0) + max(
+                                0.0,
+                                100 * (current_cpu_time - previous_cpu_time) / elapsed,
+                            )
+                        self._cpu_times[process.pid] = current_cpu_time
+                        memory += process.memory_info().rss / (1024 * 1024)
+                except (psutil.AccessDenied, psutil.NoSuchProcess):
+                    continue
+
+        # macOS can run Ollama through the app bundle, where process metadata
+        # is sometimes not visible to psutil. `ps` is available on every Mac
+        # and reports the same process CPU percentage and resident memory.
+        if not ollama_detected and sys.platform == "darwin":
             try:
-                name = (process.info.get("name") or "").lower()
-                executable = (process.info.get("exe") or "").lower()
-                if "ollama" in name or "ollama" in executable:
-                    ollama_detected = True
-                    cpu += process.cpu_percent(interval=None)
-                    memory += process.memory_info().rss / (1024 * 1024)
-            except (psutil.AccessDenied, psutil.NoSuchProcess):
-                continue
+                completed = subprocess.run(
+                    ["ps", "-axo", "pid=,pcpu=,rss=,command="],
+                    capture_output=True,
+                    text=True,
+                    timeout=3,
+                    check=False,
+                )
+                for line in completed.stdout.splitlines():
+                    fields = line.split(None, 3)
+                    if len(fields) == 4 and "ollama" in fields[3].lower():
+                        ollama_detected = True
+                        cpu = (cpu or 0.0) + float(fields[1])
+                        memory += int(fields[2]) / 1024
+            except (OSError, subprocess.SubprocessError, ValueError):
+                pass
+        self._last_sample_at = sampled_at
 
         sample = {
             "ollama_detected": ollama_detected,
-            "cpu_percent": round(cpu, 2),
+            "cpu_percent": round(cpu, 2) if cpu is not None else None,
             "memory_mb": round(memory, 2),
             "gpu_utilization_percent": None,
             "gpu_memory_mb": None,
@@ -176,7 +213,7 @@ class _OllamaResourceSampler:
             self._take_sample()
 
     def start(self):
-        self._take_sample()  # Prime psutil's per-process CPU counter.
+        self._take_sample()  # Establish CPU-time baselines before the request.
         self.thread = threading.Thread(target=self._run, daemon=True)
         self.thread.start()
 
@@ -186,7 +223,7 @@ class _OllamaResourceSampler:
             self.thread.join(timeout=2)
         self._take_sample()
 
-        if psutil is None:
+        if psutil is None and sys.platform != "darwin":
             return {"status": "psutil is not installed"}
         found = [row for row in self.samples if row["ollama_detected"]]
         if not found:
@@ -202,7 +239,7 @@ class _OllamaResourceSampler:
         return {
             "status": "Collected",
             "samples": len(found),
-            "average_ollama_cpu_percent": round(statistics.mean(cpu), 2),
+            "average_ollama_cpu_percent": round(statistics.mean(cpu), 2) if cpu else None,
             "peak_ollama_memory_mb": round(max(memory), 2),
             "average_host_gpu_utilization_percent": round(statistics.mean(gpu), 2) if gpu else None,
             "peak_host_gpu_memory_mb": round(max(gpu_memory), 2) if gpu_memory else None,
@@ -210,11 +247,18 @@ class _OllamaResourceSampler:
 
 
 def _run_question(question, model_name, app_url, post_json):
+    """Run one *new* RAG request and retain all evidence used for scoring it."""
     sampler = _OllamaResourceSampler()
     sampler.start()
     started = time.perf_counter()
     try:
-        response = post_json(app_url, {"question": question["question"], "model": MODELS[model_name]})
+        # Explicitly pin RAG mode.  This keeps every model/question run on the
+        # same application route, retriever, prompt, and knowledge base.
+        response = post_json(app_url, {
+            "question": question["question"],
+            "model": MODELS[model_name],
+            "mode": "rag",
+        })
     finally:
         latency = time.perf_counter() - started
         resources = sampler.stop()
@@ -222,16 +266,47 @@ def _run_question(question, model_name, app_url, post_json):
     documents = response.get("retrieved_documents", [])
     llm_metrics = response.get("llm_metrics", {})
     answer = response.get("answer", "")
+    expected_source = EXPECTED_SOURCES.get(question["id"])
+    expected_source_rank = next(
+        (
+            index for index, document in enumerate(documents, start=1)
+            if document.get("source") == expected_source
+        ),
+        None,
+    )
+    correct = score_policy_answer(question["id"], answer)
+    retrieved_expected_source = expected_source_rank is not None
+    grounded = bool(correct and retrieved_expected_source)
+    unsupported = bool(documents and answer.strip() and not correct)
     return {
         "id": question["id"],
         "question": question["question"],
         "expected": question["expected"],
         "model": model_name,
         "answer": answer,
-        "correct": score_policy_answer(question["id"], answer),
+        # Correctness is the transparent policy rubric; relevance is recorded
+        # separately so the displayed model table does not hide the score.
+        "correct": correct,
+        "relevant": correct,
         "latency_seconds": round(latency, 3),
         "top1_similarity": round(documents[0].get("similarity", 0), 4) if documents else 0,
         "retrieved_documents": documents,
+        "retrieval_quality": {
+            "expected_source": expected_source,
+            "expected_source_rank": expected_source_rank,
+            "expected_source_retrieved_at_4": retrieved_expected_source,
+            "reciprocal_rank_at_4": round(1 / expected_source_rank, 4) if expected_source_rank else 0,
+        },
+        "grounding": {
+            "grounded": grounded,
+            "unsupported": unsupported,
+            "status": (
+                "Grounded and correct" if grounded else
+                "Correct, but expected source was not retrieved" if correct else
+                "Unsupported despite retrieved context" if unsupported else
+                "No grounded answer"
+            ),
+        },
         "ollama_metrics": llm_metrics,
         "resource_metrics": resources,
     }
@@ -247,7 +322,15 @@ def _run_model(model_name, questions, app_url, post_json):
             results.append({
                 "id": question["id"], "question": question["question"], "expected": question["expected"],
                 "model": model_name, "answer": f"Evaluation error: {error}", "correct": False,
+                "relevant": False,
                 "latency_seconds": 0, "top1_similarity": 0, "retrieved_documents": [],
+                "retrieval_quality": {
+                    "expected_source": EXPECTED_SOURCES.get(question["id"]),
+                    "expected_source_rank": None,
+                    "expected_source_retrieved_at_4": False,
+                    "reciprocal_rank_at_4": 0,
+                },
+                "grounding": {"grounded": False, "unsupported": False, "status": "No response"},
                 "ollama_metrics": {}, "resource_metrics": {"status": "No response"},
             })
         progress.progress(index / len(questions), text=f"Running {model_name}: {index}/{len(questions)}")
@@ -258,16 +341,7 @@ def _run_model(model_name, questions, app_url, post_json):
 def _summary(model_name, rows):
     latencies = [row["latency_seconds"] for row in rows]
     similarities = [row["top1_similarity"] for row in rows if row["retrieved_documents"]]
-    source_ranks = []
-    for row in rows:
-        expected_source = EXPECTED_SOURCES.get(row["id"])
-        source_ranks.append(next(
-            (
-                index for index, document in enumerate(row["retrieved_documents"], start=1)
-                if document.get("source") == expected_source
-            ),
-            None,
-        ))
+    source_ranks = [row["retrieval_quality"]["expected_source_rank"] for row in rows]
     tokens_in = [row["ollama_metrics"].get("prompt_tokens") for row in rows if row["ollama_metrics"].get("prompt_tokens") is not None]
     tokens_out = [row["ollama_metrics"].get("completion_tokens") for row in rows if row["ollama_metrics"].get("completion_tokens") is not None]
     cpu = [row["resource_metrics"].get("average_ollama_cpu_percent") for row in rows if row["resource_metrics"].get("average_ollama_cpu_percent") is not None]
@@ -275,17 +349,18 @@ def _summary(model_name, rows):
     gpu = [row["resource_metrics"].get("average_host_gpu_utilization_percent") for row in rows if row["resource_metrics"].get("average_host_gpu_utilization_percent") is not None]
     gpu_memory = [row["resource_metrics"].get("peak_host_gpu_memory_mb") for row in rows if row["resource_metrics"].get("peak_host_gpu_memory_mb") is not None]
     correct = sum(row["correct"] for row in rows)
+    relevant = sum(row["relevant"] for row in rows)
     retrieved_expected = sum(rank is not None for rank in source_ranks)
-    unsupported = sum(
-        bool(row["retrieved_documents"] and row["answer"].strip() and not row["correct"])
-        for row in rows
-    )
+    grounded = sum(row["grounding"]["grounded"] for row in rows)
+    unsupported = sum(row["grounding"]["unsupported"] for row in rows)
     return {
         "Model": model_name,
-        "Accuracy / relevance": f"{100 * correct / len(rows):.1f}%",
+        "Accuracy": f"{100 * correct / len(rows):.1f}%",
+        "Relevance": f"{100 * relevant / len(rows):.1f}%",
         "Recall@4": f"{100 * retrieved_expected / len(rows):.1f}%",
         "MRR@4": f"{statistics.mean(1 / rank if rank else 0 for rank in source_ranks):.4f}",
         "Avg top-1 similarity": f"{statistics.mean(similarities):.4f}" if similarities else "N/A",
+        "Grounded": f"{grounded}/{len(rows)}",
         "Unsupported rate": f"{100 * unsupported / len(rows):.1f}%",
         "Avg latency": f"{statistics.mean(latencies):.3f}s",
         "P95 latency": f"{sorted(latencies)[max(0, round(0.95 * len(latencies)) - 1)]:.3f}s",
@@ -324,9 +399,8 @@ def _save_live_evidence(project_root, results, timestamp):
 
 
 def render_week4_submission(app_url, project_root, post_json):
-    """Render the separate, presentation-ready Week 4 dashboard page."""
+    """Render the separate, presentation-ready evidence dashboard page."""
     submission_dir = project_root / "week4_submission"
-    baseline = _read_json(submission_dir / "saved_results_metrics.json", [])
     questions = _read_json(project_root / "evaluation" / "questions.json", [])
     if "week4_final_results" not in st.session_state:
         st.session_state.week4_final_results = {}
@@ -334,6 +408,13 @@ def render_week4_submission(app_url, project_root, post_json):
         st.session_state.week4_final_last_run = None
     if "week4_final_saved_file" not in st.session_state:
         st.session_state.week4_final_saved_file = None
+    if "week4_final_notice" not in st.session_state:
+        st.session_state.week4_final_notice = None
+
+    valid_question_set = (
+        len(questions) == 25
+        and {question.get("id") for question in questions} == set(EXPECTED_SOURCES)
+    )
 
     st.markdown(
         """
@@ -354,9 +435,9 @@ def render_week4_submission(app_url, project_root, post_json):
         unsafe_allow_html=True,
     )
 
-    st.markdown('<div class="section-title">Week 4 — Final Submission Evidence</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Final Submission Evidence</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="section-description">A separate dashboard for all six Week 4 exercises: '
+        '<div class="section-description">A separate dashboard for the complete submission evidence: '
         'fair model comparison, metrics, RAG analysis, repository analysis, and fresh resource measurement.</div>',
         unsafe_allow_html=True,
     )
@@ -385,24 +466,24 @@ def render_week4_submission(app_url, project_root, post_json):
         )
         report = submission_dir / "WEEK4_REPORT.md"
         if report.exists():
-            with st.expander("Open the full written Week 4 report"):
+            with st.expander("Open the full written report"):
                 st.markdown(report.read_text(encoding="utf-8"))
 
     with results_tab:
-        if baseline:
-            rows = [{
-                "Model": item["model"], "Accuracy": f"{item['accuracy_percent']:.1f}%",
-                "Relevance": f"{item['answer_relevance_percent']:.1f}%",
-                "Recall@4": f"{item['retrieval_recall_at_4_percent']:.1f}%",
-                "MRR@4": f"{item['retrieval_mrr_at_4']:.4f}",
-                "Top-1 similarity": f"{item['mean_top1_similarity']:.4f}",
-                "Unsupported rate": f"{item['unsupported_or_contradictory_rate_percent']:.1f}%",
-                "Avg latency": f"{item['average_latency_seconds']:.3f}s",
-                "P95 latency": f"{item['p95_latency_seconds']:.3f}s",
-            } for item in baseline]
-            st.markdown(_table_html(rows), unsafe_allow_html=True)
-            st.success("DeepSeek Coder has the highest recorded accuracy (76%) and lowest recorded average latency (1.530 s).")
-        st.info("Legacy runs did not retain token or hardware samples. The fresh-run tab records those values without changing the RAG conditions.")
+        st.subheader("Model Comparison")
+        fresh_summaries = [
+            _summary(model_name, rows)
+            for model_name, rows in st.session_state.week4_final_results.items()
+            if rows
+        ]
+        if fresh_summaries:
+            st.markdown(_table_html(fresh_summaries), unsafe_allow_html=True)
+            st.caption(
+                "Exercise 3 is calculated from the current session's fresh API responses only; "
+                "saved baseline results are never used here."
+            )
+        else:
+            st.info("Run Full Evaluation to generate the Exercise 3 Model Results table from 75 fresh RAG responses.")
 
     with rag_tab:
         for title, evidence in [
@@ -437,6 +518,8 @@ def render_week4_submission(app_url, project_root, post_json):
 
     with fresh_tab:
         st.caption("A full run issues 25 identical-condition requests per model (75 for all three). It may take several minutes.")
+        if not valid_question_set:
+            st.error("The evaluation dataset must contain the 25 unique Q01–Q25 questions before a full run can start.")
         if psutil is None:
             st.warning("Install `frontend/requirements.txt` before a fresh run to collect CPU/RAM samples.")
         elif not shutil.which("nvidia-smi"):
@@ -444,14 +527,18 @@ def render_week4_submission(app_url, project_root, post_json):
         else:
             st.success("Fresh runs will collect Ollama token/timing values and CPU/RAM/GPU samples.")
 
-        all_column, one_column = st.columns(2)
-        with all_column:
-            run_all = st.button("Run All 3 Models — 75 Instrumented Questions", type="primary", use_container_width=True)
-        with one_column:
-            selected_model = st.selectbox("Run one model", list(MODELS.keys()), key="week4_final_model")
-            run_one = st.button("Run Selected Model — 25 Questions", use_container_width=True)
+        run_all = st.button(
+            "Run Full Evaluation",
+            type="primary",
+            use_container_width=True,
+            disabled=not valid_question_set,
+            help="Runs all 25 questions against each of the three models through the existing RAG API.",
+        )
 
         if run_all:
+            # A full evaluation is deliberately a new 75-request dataset. Do
+            # not retain a previous model's rows if a user asks for a new run.
+            st.session_state.week4_final_results = {}
             for model_name in MODELS:
                 with st.expander(f"Running {model_name}", expanded=True):
                     st.session_state.week4_final_results[model_name] = _run_model(model_name, questions, app_url, post_json)
@@ -461,21 +548,14 @@ def render_week4_submission(app_url, project_root, post_json):
                 st.session_state.week4_final_results,
                 st.session_state.week4_final_last_run
             )
-            st.success("Completed and saved 75 instrumented model-question runs.")
-        elif run_one:
-            st.session_state.week4_final_results[selected_model] = _run_model(selected_model, questions, app_url, post_json)
-            st.session_state.week4_final_last_run = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            st.session_state.week4_final_saved_file = _save_live_evidence(
-                project_root,
-                st.session_state.week4_final_results,
-                st.session_state.week4_final_last_run
-            )
-            st.success(f"Completed and saved the instrumented run for {selected_model}.")
+            st.session_state.week4_final_notice = "Completed and saved 75 fresh instrumented model-question runs."
+            st.rerun()
+        if st.session_state.week4_final_notice:
+            st.success(st.session_state.week4_final_notice)
+            st.session_state.week4_final_notice = None
 
         summaries = [_summary(model, rows) for model, rows in st.session_state.week4_final_results.items() if rows]
         if summaries:
-            st.markdown("### Fresh-run comparison")
-            st.markdown(_table_html(summaries), unsafe_allow_html=True)
             st.caption(f"Last fresh run: {st.session_state.week4_final_last_run}")
             if st.session_state.week4_final_saved_file:
                 st.caption(
@@ -483,7 +563,7 @@ def render_week4_submission(app_url, project_root, post_json):
                     f"evaluation/results/{st.session_state.week4_final_saved_file.name}"
                 )
             st.download_button(
-                "Download fresh Week 4 evidence (JSON)",
+                "Download fresh evaluation evidence (JSON)",
                 data=json.dumps(st.session_state.week4_final_results, indent=2),
                 file_name="invoiceiq_week4_instrumented_results.json",
                 mime="application/json",
@@ -497,8 +577,12 @@ def render_week4_submission(app_url, project_root, post_json):
                         st.write("**Expected:**", item["expected"])
                         st.write("**Answer:**", item["answer"])
                         st.json({
+                            "correct": item["correct"],
+                            "relevant": item["relevant"],
                             "latency_seconds": item["latency_seconds"],
                             "top1_similarity": item["top1_similarity"],
+                            "retrieval_quality": item["retrieval_quality"],
+                            "grounding": item["grounding"],
                             "ollama_metrics": item["ollama_metrics"],
                             "resource_metrics": item["resource_metrics"],
                         })

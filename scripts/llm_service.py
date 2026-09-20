@@ -8,9 +8,10 @@ PORT = 8002
 MODEL = os.environ.get("MODEL", "qwen2.5-coder:1.5b-instruct")
 
 
-def generate_answer(question, context, model):
+def generate_answer(question, context, model, use_rag):
 
-    prompt = f"""You are InvoiceIQ, a precise invoice and policy assistant.
+    if use_rag:
+        prompt = f"""You are InvoiceIQ, a precise invoice and policy assistant.
 
 Use only the provided context. Give the direct answer first, then only the
 minimum supporting detail needed. Preserve all conditions, exceptions, and
@@ -22,6 +23,18 @@ in the provided policy. Do not guess or use general knowledge.
 
 Context:
 {context}
+
+Question:
+{question}
+
+Answer in one or two concise sentences.
+"""
+    else:
+        prompt = f"""You are InvoiceIQ, a helpful invoice and policy assistant.
+
+Answer the question using your general knowledge. No knowledge-base context was
+provided for this response, so do not claim that an answer comes from a company
+policy or source. Be direct, and clearly state uncertainty when appropriate.
 
 Question:
 {question}
@@ -63,7 +76,7 @@ Answer in one or two concise sentences.
         )
     }
 
-    return result["response"], metrics
+    return result["response"], metrics, prompt
 
 
 def send_json(handler, payload, status=200):
@@ -90,11 +103,18 @@ class LLMHandler(BaseHTTPRequestHandler):
         request_data = json.loads(body.decode("utf-8"))
 
         question = request_data["question"]
-        context = request_data["context"]
-        model = request_data.get("model", MODEL)
+        context = request_data.get("context", "")
+        model = request_data.get("model") or MODEL
+        mode = request_data.get("mode", "rag")
+
+        if mode not in ("rag", "non_rag"):
+            send_json(self, {"error": "mode must be either 'rag' or 'non_rag'."}, 400)
+            return
 
         try:
-            answer, metrics = generate_answer(question, context, model)
+            answer, metrics, prompt = generate_answer(
+                question, context, model, mode == "rag"
+            )
         except (urllib.error.URLError, TimeoutError, OSError) as error:
             send_json(
                 self,
@@ -109,8 +129,10 @@ class LLMHandler(BaseHTTPRequestHandler):
         response = {
             "question": question,
             "model": model,
+            "mode": mode,
             "answer": answer,
-            "metrics": metrics
+            "metrics": metrics,
+            "prompt": prompt,
         }
 
         send_json(self, response)
