@@ -1,0 +1,86 @@
+[
+  {
+    "id": "CB01", "category": "Explanation", "evaluation_type": "explanation",
+    "question": "In InvoiceIQ, explain the purpose of a helper that JSON-encodes a request, sends it with Content-Type application/json, and decodes the JSON response. Focus on its role in service-to-service communication.",
+    "expected_behavior": "Explains JSON request/response handling and HTTP service communication.",
+    "required_terms": ["json"], "any_terms": ["http", "request", "response", "service"]
+  },
+  {
+    "id": "CB02", "category": "Explanation", "evaluation_type": "explanation",
+    "question": "Explain why a RAG application retrieves relevant policy context before asking the language model to answer a policy question.",
+    "expected_behavior": "Explains grounding the answer in relevant retrieved policy context.",
+    "required_terms": ["context"], "any_terms": ["retriev", "ground", "policy", "relevant"]
+  },
+  {
+    "id": "CB03", "category": "Code Retrieval", "evaluation_type": "code_retrieval",
+    "question": "Which InvoiceIQ Python module receives /ask requests and forwards them to the orchestrator service? Name the file and the request handler method.",
+    "expected_behavior": "Identifies scripts/app_service.py and its do_POST request handler.",
+    "required_terms": ["app_service", "do_post"], "any_terms": ["orchestrator", "/ask"]
+  },
+  {
+    "id": "CB04", "category": "Code Retrieval", "evaluation_type": "code_retrieval",
+    "question": "Which InvoiceIQ module calls the retrieval service, and what helper function makes that HTTP call?", 
+    "expected_behavior": "Identifies scripts/orchestrator.py and call_service.",
+    "required_terms": ["orchestrator", "call_service"], "any_terms": ["retrieval", "http"]
+  },
+  {
+    "id": "CB05", "category": "Dependency Understanding", "evaluation_type": "dependency",
+    "question": "Describe the InvoiceIQ request dependency flow after a dashboard user submits a question. Include the frontend, application service, orchestrator, retrieval service, and LLM service.",
+    "expected_behavior": "Describes the ordered frontend → app service → orchestrator → retrieval/LLM flow.",
+    "required_terms": ["frontend", "orchestrator", "retrieval", "llm"], "any_terms": ["app_service", "application service"]
+  },
+  {
+    "id": "CB06", "category": "Dependency Understanding", "evaluation_type": "dependency",
+    "question": "In the InvoiceIQ compose architecture, which service depends on the orchestrator and why?", 
+    "expected_behavior": "Identifies the app service as depending on orchestrator because it forwards /ask requests there.",
+    "required_terms": ["app", "orchestrator"], "any_terms": ["depends", "forward", "/ask"]
+  },
+  {
+    "id": "CB07", "category": "Bug Analysis", "evaluation_type": "bug_analysis",
+    "question": "Analyze this Python networking helper: urllib.request.urlopen(request) is called without a timeout. What operational problem can this cause, and what is a suitable fix?", 
+    "expected_behavior": "Identifies an indefinitely blocked/hung request risk and recommends a timeout plus error handling.",
+    "required_terms": ["timeout"], "any_terms": ["hang", "block", "error", "exception", "unresponsive"]
+  },
+  {
+    "id": "CB08", "category": "Bug Analysis", "evaluation_type": "bug_analysis",
+    "question": "A request handler accepts a mode field but the only valid values are rag and non_rag. Analyze the bug risk if it does not validate mode and state the correct behavior.",
+    "expected_behavior": "Identifies invalid/unsupported mode handling and recommends rejecting it with a clear error.",
+    "required_terms": ["mode"], "any_terms": ["valid", "invalid", "reject", "error", "validate"]
+  },
+  {
+    "id": "CB09", "category": "Code Generation", "evaluation_type": "code_generation",
+    "question": "Write a small Python function normalize_mode(mode) that returns rag for None, accepts rag and non_rag, and raises ValueError for any other value.",
+    "expected_behavior": "Produces Python code with a function, accepted modes, default rag, and ValueError for invalid input.",
+    "required_terms": ["def", "rag", "non_rag", "valueerror"], "any_terms": ["none", "raise"]
+  },
+  {
+    "id": "CB10", "category": "Code Generation", "evaluation_type": "code_generation",
+    "question": "Write concise Python code that makes a JSON POST request with urllib, uses a 10-second timeout, and returns decoded JSON.",
+    "expected_behavior": "Produces code using urllib, JSON, POST, timeout, and JSON decoding.",
+    "required_terms": ["urllib", "json", "timeout"], "any_terms": ["post", "request"]
+  },
+  {
+    "id": "CB11", "category": "Refactoring", "evaluation_type": "refactoring",
+    "question": "Propose a Python refactoring that extracts repeated JSON POST request setup into a reusable helper while preserving the existing request method and JSON response behavior.",
+    "expected_behavior": "Proposes a reusable helper while preserving POST and JSON behavior.",
+    "required_terms": ["helper", "json"], "any_terms": ["post", "reuse", "function", "preserv"]
+  },
+  {
+    "id": "CB12", "category": "Refactoring", "evaluation_type": "refactoring",
+    "question": "Refactor a long request handler conceptually so validation, retrieval, LLM generation, and response serialization are separated without changing observable API behavior.",
+    "expected_behavior": "Separates responsibilities while explicitly preserving API behavior.",
+    "required_terms": ["validation"], "any_terms": ["retrieval", "response", "preserv", "separate", "function"]
+  },
+  {
+    "id": "CB13", "category": "RAG-based Question", "evaluation_type": "rag_grounded",
+    "question": "How long do we have to pay an invoice?", 
+    "expected_behavior": "Answers thirty days from the invoice date, supported by retrieved payment policy context.",
+    "required_terms": ["30", "invoice"], "any_terms": ["day", "days"], "expected_sources": ["payment_policy.txt"]
+  },
+  {
+    "id": "CB14", "category": "RAG-based Question", "evaluation_type": "rag_grounded",
+    "question": "When can immediate termination occur?", 
+    "expected_behavior": "Answers that immediate termination follows an uncorrected material breach after fifteen days' written notice, supported by retrieved policy context.",
+    "required_terms": ["immediate", "termination"], "any_terms": ["15", "fifteen", "breach"], "expected_sources": ["termination_policy.txt"]
+  }
+]

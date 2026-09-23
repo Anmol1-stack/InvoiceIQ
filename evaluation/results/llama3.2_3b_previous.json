@@ -1,0 +1,600 @@
+[
+  {
+    "id": "Q01",
+    "question": "How long do we have to pay an invoice?",
+    "expected": "Invoices must be paid within thirty days from the invoice date.",
+    "response": {
+      "question": "How long do we have to pay an invoice?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.7751143845181722
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.5270998475439588
+        }
+      ],
+      "answer": "Invoices must be paid within thirty days from the invoice date."
+    },
+    "latency_seconds": 6.275
+  },
+  {
+    "id": "Q02",
+    "question": "What happens if an invoice is paid late?",
+    "expected": "Late payments may be subject to applicable interest charges.",
+    "response": {
+      "question": "What happens if an invoice is paid late?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.7888780058663215
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.5221109498048674
+        }
+      ],
+      "answer": "According to the payment policy, if an invoice is paid late, it may be subject to applicable interest charges."
+    },
+    "latency_seconds": 1.701
+  },
+  {
+    "id": "Q03",
+    "question": "How long do we have to dispute an invoice?",
+    "expected": "The customer must notify the service provider within ten business days.",
+    "response": {
+      "question": "How long do we have to dispute an invoice?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.7840259590268364
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.5790464911930238
+        }
+      ],
+      "answer": "You must notify us of any disputed invoice within ten business days."
+    },
+    "latency_seconds": 1.145
+  },
+  {
+    "id": "Q04",
+    "question": "Do undisputed portions remain payable when another portion is disputed?",
+    "expected": "Yes. Undisputed portions remain payable.",
+    "response": {
+      "question": "Do undisputed portions remain payable when another portion is disputed?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.646620230226365
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.5487870305227358
+        }
+      ],
+      "answer": "Yes, undisputed portions of an invoice remain payable even when another portion is disputed."
+    },
+    "latency_seconds": 1.475
+  },
+  {
+    "id": "Q05",
+    "question": "How much written notice is required to terminate the agreement?",
+    "expected": "Either party may terminate the agreement by providing thirty days written notice.",
+    "response": {
+      "question": "How much written notice is required to terminate the agreement?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.8298967489991351
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.5226452066836278
+        }
+      ],
+      "answer": "Thirty days' written notice is required for termination, but immediate termination may occur if a party breaches and fails to correct it within fifteen days after receiving written notice."
+    },
+    "latency_seconds": 3.075
+  },
+  {
+    "id": "Q06",
+    "question": "When can immediate termination occur?",
+    "expected": "Immediate termination may occur after a material breach is not corrected within fifteen days after written notice.",
+    "response": {
+      "question": "When can immediate termination occur?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.7752061838740842
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.5275754897262731
+        }
+      ],
+      "answer": "Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice from the other party."
+    },
+    "latency_seconds": 1.898
+  },
+  {
+    "id": "Q07",
+    "question": "Does termination remove payment obligations that became due before termination?",
+    "expected": "No.",
+    "response": {
+      "question": "Does termination remove payment obligations that became due before termination?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.784137051638054
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.6323282160187784
+        }
+      ],
+      "answer": "No, termination does not remove payment obligations that became due before termination."
+    },
+    "latency_seconds": 1.361
+  },
+  {
+    "id": "Q08",
+    "question": "Does termination remove confidentiality obligations?",
+    "expected": "No.",
+    "response": {
+      "question": "Does termination remove confidentiality obligations?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.771676589237806
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "CONFIDENTIALITY POLICY Confidential information includes business plans, financial information, customer information, technical information, and proprietary documents. Confidential information must not be disclosed to third parties unless the disclosure is authorized by the company or required by law. Information that is already publicly available is not considered confidential information. Employees must protect confidential information during and after their employment.",
+          "similarity": 0.7004803456868943
+        }
+      ],
+      "answer": "No, termination does not remove confidentiality obligations; it only removes obligations relating to confidentiality from taking effect."
+    },
+    "latency_seconds": 2.345
+  },
+  {
+    "id": "Q09",
+    "question": "Does termination remove intellectual-property obligations?",
+    "expected": "No.",
+    "response": {
+      "question": "Does termination remove intellectual-property obligations?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.7591317123096526
+        },
+        {
+          "source": "contract_policy.txt",
+          "text": "CONFIDENTIALITY POLICY Confidential information includes business plans, financial information, customer information, technical information, and proprietary documents. Confidential information must not be disclosed to third parties unless the disclosure is authorized by the company or required by law. Information that is already publicly available is not considered confidential information. Employees must protect confidential information during and after their employment.",
+          "similarity": 0.5071830996172749
+        }
+      ],
+      "answer": "No, termination does not remove intellectual property obligations according to the TERMINATION POLICY."
+    },
+    "latency_seconds": 1.741
+  },
+  {
+    "id": "Q10",
+    "question": "What obligations continue after termination?",
+    "expected": "Confidentiality, intellectual property, and payments that became due before termination.",
+    "response": {
+      "question": "What obligations continue after termination?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.7479524634257547
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.5234410732351229
+        }
+      ],
+      "answer": "Obligations relating to confidentiality and intellectual property continue after termination."
+    },
+    "latency_seconds": 1.459
+  },
+  {
+    "id": "Q11",
+    "question": "What is the payment deadline for an invoice?",
+    "expected": "Thirty days from the invoice date.",
+    "response": {
+      "question": "What is the payment deadline for an invoice?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.8218603605613546
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.5893514345813602
+        }
+      ],
+      "answer": "The payment deadline for an invoice is thirty days from the invoice date."
+    },
+    "latency_seconds": 1.544
+  },
+  {
+    "id": "Q12",
+    "question": "Within what period must an invoice be settled after it is issued?",
+    "expected": "Within thirty days from the invoice date.",
+    "response": {
+      "question": "Within what period must an invoice be settled after it is issued?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.7733995995890719
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.6131918287975533
+        }
+      ],
+      "answer": "An invoice must be paid within thirty days from its issue date."
+    },
+    "latency_seconds": 1.724
+  },
+  {
+    "id": "Q13",
+    "question": "How many days does a customer have to raise an invoice dispute?",
+    "expected": "Ten business days.",
+    "response": {
+      "question": "How many days does a customer have to raise an invoice dispute?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.7622632547594326
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.551692516088007
+        }
+      ],
+      "answer": "A customer has 10 business days to notify the service provider of any disputed invoice."
+    },
+    "latency_seconds": 1.826
+  },
+  {
+    "id": "Q14",
+    "question": "Can we withhold an undisputed part of an invoice because another part is disputed?",
+    "expected": "No. Undisputed portions remain payable.",
+    "response": {
+      "question": "Can we withhold an undisputed part of an invoice because another part is disputed?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.6609793138275413
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.557137824302786
+        }
+      ],
+      "answer": "No, according to the Payment Policy, \"Undisputed portions of an invoice remain payable even when another portion is disputed.\" This implies that you cannot withhold payment for an undisputed amount due to a disputed amount."
+    },
+    "latency_seconds": 2.85
+  },
+  {
+    "id": "Q15",
+    "question": "How much advance notice must either party provide before ending the agreement?",
+    "expected": "Thirty days written notice.",
+    "response": {
+      "question": "How much advance notice must either party provide before ending the agreement?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.8027092171124861
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.5931831965804667
+        }
+      ],
+      "answer": "Either party must provide 30 days written notice before terminating the agreement."
+    },
+    "latency_seconds": 2.017
+  },
+  {
+    "id": "Q16",
+    "question": "How long does a party have to fix a material breach after receiving notice?",
+    "expected": "Fifteen days.",
+    "response": {
+      "question": "How long does a party have to fix a material breach after receiving notice?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.6995897862699801
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.620959013839684
+        }
+      ],
+      "answer": "A party has fifteen days to correct a material breach after receiving written notice."
+    },
+    "latency_seconds": 2.124
+  },
+  {
+    "id": "Q17",
+    "question": "Which responsibilities survive after the agreement ends?",
+    "expected": "Confidentiality, intellectual property, and payments that became due before termination.",
+    "response": {
+      "question": "Which responsibilities survive after the agreement ends?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.7095411476861814
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.5154802001459048
+        }
+      ],
+      "answer": "According to the context, the following obligations and responsibilities survive after the agreement ends:\n\n1. Confidentiality\n2. Intellectual property obligations\n3. Payment obligations for amounts due before termination (i.e., payments that became due before termination)"
+    },
+    "latency_seconds": 4.405
+  },
+  {
+    "id": "Q18",
+    "question": "If an invoice is dated June 1, when is payment due under the payment policy?",
+    "expected": "Thirty days from June 1.",
+    "error": "Remote end closed connection without response"
+  },
+  {
+    "id": "Q19",
+    "question": "If a customer disputes only part of an invoice, does the undisputed amount still have to be paid?",
+    "expected": "Yes.",
+    "error": "Remote end closed connection without response"
+  },
+  {
+    "id": "Q20",
+    "question": "If a party receives written notice of a material breach but does not correct it within 15 days, what can happen?",
+    "expected": "Immediate termination may occur.",
+    "error": "Remote end closed connection without response"
+  },
+  {
+    "id": "Q21",
+    "question": "If the agreement is terminated, can previously due payments simply be ignored?",
+    "expected": "No. Payments that became due before termination remain obligations.",
+    "error": "Remote end closed connection without response"
+  },
+  {
+    "id": "Q22",
+    "question": "Can either party terminate the agreement immediately without a material breach?",
+    "expected": "No. The policy specifies thirty days written notice for termination, while immediate termination may occur for an uncorrected material breach.",
+    "error": "Remote end closed connection without response"
+  },
+  {
+    "id": "Q23",
+    "question": "What is the penalty percentage for late invoice payments?",
+    "expected": "Not specified in the provided knowledge base.",
+    "error": "Remote end closed connection without response"
+  },
+  {
+    "id": "Q24",
+    "question": "What payment methods are accepted for invoices?",
+    "expected": "Not specified in the provided knowledge base.",
+    "error": "Remote end closed connection without response"
+  },
+  {
+    "id": "Q25",
+    "question": "What is the maximum number of days allowed for termination notice?",
+    "expected": "The provided policy specifies thirty days written notice; it does not state a maximum beyond that.",
+    "error": "Remote end closed connection without response"
+  },
+  {
+    "id": "Q18",
+    "question": "If an invoice is dated June 1, when is payment due under the payment policy?",
+    "expected": "Thirty days from June 1.",
+    "response": {
+      "question": "If an invoice is dated June 1, when is payment due under the payment policy?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.7849240492966639
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.534917361614346
+        }
+      ],
+      "answer": "According to the Payment Policy, payment is due within thirty days from the invoice date. Since the invoice is dated June 1, payment would be due on July 1."
+    },
+    "latency_seconds": 2.725
+  },
+  {
+    "id": "Q19",
+    "question": "If a customer disputes only part of an invoice, does the undisputed amount still have to be paid?",
+    "expected": "Yes.",
+    "response": {
+      "question": "If a customer disputes only part of an invoice, does the undisputed amount still have to be paid?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.7185962999191577
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.5544959751671071
+        }
+      ],
+      "answer": "Yes, according to the Payment Policy, \"Undisputed portions of an invoice remain payable even when another portion is disputed.\" This means that the customer must pay the undisputed portion of the invoice as it was due."
+    },
+    "latency_seconds": 3.068
+  },
+  {
+    "id": "Q20",
+    "question": "If a party receives written notice of a material breach but does not correct it within 15 days, what can happen?",
+    "expected": "Immediate termination may occur.",
+    "response": {
+      "question": "If a party receives written notice of a material breach but does not correct it within 15 days, what can happen?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.704637931975569
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.6442373152934298
+        }
+      ],
+      "answer": "Immediate termination may occur if a party fails to correct a material breach after receiving written notice."
+    },
+    "latency_seconds": 3.521
+  },
+  {
+    "id": "Q21",
+    "question": "If the agreement is terminated, can previously due payments simply be ignored?",
+    "expected": "No. Payments that became due before termination remain obligations.",
+    "response": {
+      "question": "If the agreement is terminated, can previously due payments simply be ignored?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.7638740526558319
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.6053866934898451
+        }
+      ],
+      "answer": "No, previously due payments are still obligations and must be paid before termination, regardless of whether the agreement is terminated."
+    },
+    "latency_seconds": 3.389
+  },
+  {
+    "id": "Q22",
+    "question": "Can either party terminate the agreement immediately without a material breach?",
+    "expected": "No. The policy specifies thirty days written notice for termination, while immediate termination may occur for an uncorrected material breach.",
+    "response": {
+      "question": "Can either party terminate the agreement immediately without a material breach?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.8393386054669013
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.5335549992504306
+        }
+      ],
+      "answer": "No, immediate termination is only allowed if there's a material breach that hasn't been corrected within 15 days after written notice."
+    },
+    "latency_seconds": 4.037
+  },
+  {
+    "id": "Q23",
+    "question": "What is the penalty percentage for late invoice payments?",
+    "expected": "Not specified in the provided knowledge base.",
+    "response": {
+      "question": "What is the penalty percentage for late invoice payments?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.7616291674743882
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.5187358792071597
+        }
+      ],
+      "answer": "The context does not specify a penalty percentage for late invoice payments. It only mentions that \"late payments may be subject to applicable interest charges\", but it doesn't provide the rate or amount of these charges."
+    },
+    "latency_seconds": 3.034
+  },
+  {
+    "id": "Q24",
+    "question": "What payment methods are accepted for invoices?",
+    "expected": "Not specified in the provided knowledge base.",
+    "response": {
+      "question": "What payment methods are accepted for invoices?",
+      "retrieved_documents": [
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.7070772892563757
+        },
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.4768546915285161
+        }
+      ],
+      "answer": "The provided text does not mention specific payment methods that are accepted for invoices."
+    },
+    "latency_seconds": 1.627
+  },
+  {
+    "id": "Q25",
+    "question": "What is the maximum number of days allowed for termination notice?",
+    "expected": "The provided policy specifies thirty days written notice; it does not state a maximum beyond that.",
+    "response": {
+      "question": "What is the maximum number of days allowed for termination notice?",
+      "retrieved_documents": [
+        {
+          "source": "termination_policy.txt",
+          "text": "TERMINATION POLICY Either party may terminate the agreement by providing thirty days written notice. Immediate termination may occur if a party materially breaches the agreement and fails to correct the breach within fifteen days after receiving written notice. Termination does not remove obligations relating to confidentiality, intellectual property, or payments that became due before termination.",
+          "similarity": 0.7567252619667365
+        },
+        {
+          "source": "payment_policy.txt",
+          "text": "PAYMENT POLICY Invoices must be paid within thirty days from the invoice date. Late payments may be subject to applicable interest charges. The customer must notify the service provider of any disputed invoice within ten business days. Undisputed portions of an invoice remain payable even when another portion is disputed.",
+          "similarity": 0.5633231776510347
+        }
+      ],
+      "answer": "Thirty days."
+    },
+    "latency_seconds": 0.93
+  }
+]
